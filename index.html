@@ -7,6 +7,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="docs-data.js"></script>
   <style>
     :root {
       --bg-base: #06090f;
@@ -651,6 +655,212 @@
     .quick-table tr:hover td {
       background: rgba(255, 255, 255, 0.02);
     }
+
+    /* MARKDOWN DOCUMENT READER STYLES */
+    .reader-layout {
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      gap: 24px;
+      margin-top: 10px;
+    }
+    @media (max-width: 980px) {
+      .reader-layout { grid-template-columns: 1fr; }
+    }
+    .reader-sidebar {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      max-height: 820px;
+    }
+    .reader-search-wrap {
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .reader-search-input {
+      width: 100%;
+      background: #040711;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px 10px 36px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .reader-search-input:focus {
+      border-color: #10b981;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+    }
+    .reader-search-icon {
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .reader-stats-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .reader-tree {
+      overflow-y: auto;
+      flex: 1;
+      padding-right: 4px;
+    }
+    .reader-cat-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #10b981;
+      margin: 14px 0 6px 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .reader-doc-btn {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: none;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: #94a3b8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .reader-doc-btn:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff;
+    }
+    .reader-doc-btn.active {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.15));
+      color: #34d399;
+      font-weight: 600;
+      border-left: 3px solid #10b981;
+    }
+    .reader-content-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 34px 40px;
+      min-height: 820px;
+      max-height: 820px;
+      overflow-y: auto;
+      position: relative;
+    }
+    .reader-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .reader-crumb {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .reader-crumb .active-file {
+      color: #10b981;
+      font-weight: 600;
+    }
+
+    /* MARKDOWN STYLING INSIDE READER */
+    .markdown-render {
+      color: #e2e8f0;
+      font-size: 14.5px;
+      line-height: 1.7;
+    }
+    .markdown-render h1 {
+      font-size: 26px;
+      color: #fff;
+      margin: 20px 0 14px 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .markdown-render h2 {
+      font-size: 20px;
+      color: #6ee7b7;
+      margin: 26px 0 12px 0;
+    }
+    .markdown-render h3 {
+      font-size: 16px;
+      color: #93c5fd;
+      margin: 18px 0 10px 0;
+    }
+    .markdown-render p { margin-bottom: 14px; }
+    .markdown-render ul, .markdown-render ol {
+      margin: 12px 0 16px 24px;
+    }
+    .markdown-render li { margin-bottom: 6px; }
+    .markdown-render code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 6px;
+      border-radius: 5px;
+      color: #a7f3d0;
+    }
+    .markdown-render pre {
+      background: #040711;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      overflow-x: auto;
+    }
+    .markdown-render pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+    .markdown-render table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+    .markdown-render th {
+      background: rgba(255, 255, 255, 0.05);
+      color: #10b981;
+      text-align: left;
+      padding: 10px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .markdown-render td {
+      padding: 10px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+    }
+    .markdown-render blockquote {
+      border-left: 4px solid #10b981;
+      background: rgba(16, 185, 129, 0.05);
+      padding: 12px 18px;
+      margin: 16px 0;
+      border-radius: 0 8px 8px 0;
+      color: #94a3b8;
+    }
   </style>
 </head>
 <body>
@@ -679,12 +889,13 @@
   <!-- NAVIGATION BAR -->
   <nav class="tabs-wrapper">
     <button type="button" class="tab-btn active" onclick="showTab('tab-topo', this)">🌌 Topología 3D</button>
-    <button type="button" class="tab-btn" onclick="showTab('tab-front', this)">📱 Frontends (Vue &amp; Mobile)</button>
-    <button type="button" class="tab-btn" onclick="showTab('tab-back', this)">⚙️ Backend API Hub</button>
-    <button type="button" class="tab-btn" onclick="showTab('tab-go', this)">🚀 Motor Cierre Go</button>
-    <button type="button" class="tab-btn" onclick="showTab('tab-ai-rag', this)">🧠 IA &amp; Asistente RAG</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-reader', this)">📚 Biblioteca de Documentos (75)</button>
     <button type="button" class="tab-btn" onclick="showTab('tab-ai-dev', this)">🤖 AI Dev Playbook</button>
-    <button type="button" class="tab-btn" onclick="showTab('tab-devops', this)">☁️ Infraestructura &amp; Cloud</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-front', this)">📱 Frontends</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-back', this)">⚙️ Backend API</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-go', this)">🚀 Motor Go</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-ai-rag', this)">🧠 IA &amp; RAG</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-devops', this)">☁️ DevOps &amp; Cloud</button>
   </nav>
 
   <main class="main-wrap">
@@ -844,6 +1055,47 @@
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- =================================================================
+         TAB: BIBLIOTECA DE DOCUMENTOS (MARKDOWN READER)
+         ================================================================= -->
+    <section id="tab-reader" class="tab-panel">
+      <div class="reader-layout">
+        <!-- SIDEBAR DE NAVEGACIÓN -->
+        <aside class="reader-sidebar">
+          <div class="reader-search-wrap">
+            <span class="reader-search-icon">🔍</span>
+            <input type="text" class="reader-search-input" id="doc-search-input" placeholder="Buscar entre 75 documentos..." oninput="filterDocs(this.value)">
+          </div>
+
+          <div class="reader-stats-row">
+            <span id="doc-count-badge">75 documentos</span>
+            <span style="color: #10b981; font-weight: 600; cursor: pointer;" onclick="resetDocSearch()">Ver todos</span>
+          </div>
+
+          <div class="reader-tree" id="reader-tree-container">
+            <!-- Los botones de documentos se generan dinámicamente aquí -->
+          </div>
+        </aside>
+
+        <!-- VISOR CENTRAL DE DOCUMENTOS -->
+        <article class="reader-content-card">
+          <div class="reader-header-bar">
+            <div class="reader-crumb" id="reader-breadcrumb">
+              <span>01. Arquitectura y Reglas</span> / <span class="active-file" id="reader-active-filename">01-arquitectura-global.md</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" style="background: rgba(255,255,255,0.08); color: #fff; padding: 6px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="copyCurrentMarkdown(this)">📋 Copiar Markdown</button>
+              <a id="github-doc-link" href="https://github.com/JordyMontalvo/documentationsifrah" target="_blank" style="background: rgba(16,185,129,0.15); color: #34d399; padding: 6px 14px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.3); text-decoration: none; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">GitHub ↗</a>
+            </div>
+          </div>
+
+          <div class="markdown-render" id="markdown-render-target">
+            <!-- El contenido Markdown se renderiza aquí -->
+          </div>
+        </article>
       </div>
     </section>
 
@@ -1270,6 +1522,10 @@ Requisitos:
       const target = document.getElementById(panelId);
       if (target) target.classList.add('active');
       if (btn) btn.classList.add('active');
+
+      if (panelId === 'tab-reader') {
+        initDocReader();
+      }
     }
 
     function changeArchifyFrame(url, btn) {
@@ -1302,6 +1558,137 @@ Requisitos:
         setTimeout(() => { btn.innerHTML = original; }, 2000);
       });
     }
+
+    // ==========================================
+    // MARKDOWN READER CONTROLLER
+    // ==========================================
+    let currentDocIndex = 0;
+
+    function initDocReader() {
+      if (!window.SIFRAH_DOCS || !window.SIFRAH_DOCS.length) {
+        const target = document.getElementById('markdown-render-target');
+        if (target) {
+          target.innerHTML = '<p style="color:#f87171;">No se pudieron cargar los documentos. Verifica que docs-data.js esté presente.</p>';
+        }
+        return;
+      }
+      renderDocTree(window.SIFRAH_DOCS);
+      loadDoc(0);
+    }
+
+    function renderDocTree(docsList) {
+      const container = document.getElementById('reader-tree-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      // Agrupar por categoría
+      const categories = {};
+      docsList.forEach((doc) => {
+        const realIdx = window.SIFRAH_DOCS.indexOf(doc);
+        if (!categories[doc.category]) categories[doc.category] = [];
+        categories[doc.category].push({ doc, realIdx });
+      });
+
+      for (const [catName, items] of Object.entries(categories)) {
+        const catHeader = document.createElement('div');
+        catHeader.className = 'reader-cat-title';
+        catHeader.innerHTML = `<span>${catName}</span> <span style="color:var(--text-dim); font-size:10px;">(${items.length})</span>`;
+        container.appendChild(catHeader);
+
+        items.forEach(({ doc, realIdx }) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'reader-doc-btn' + (realIdx === currentDocIndex ? ' active' : '');
+          btn.id = 'doc-btn-' + realIdx;
+          btn.innerHTML = `<span>📄</span> <span style="overflow:hidden; text-overflow:ellipsis;">${doc.title || doc.filename}</span>`;
+          btn.title = doc.title || doc.filename;
+          btn.onclick = () => loadDoc(realIdx);
+          container.appendChild(btn);
+        });
+      }
+    }
+
+    function loadDoc(index) {
+      if (!window.SIFRAH_DOCS || !window.SIFRAH_DOCS[index]) return;
+      currentDocIndex = index;
+      const doc = window.SIFRAH_DOCS[index];
+
+      // Actualizar active en sidebar
+      document.querySelectorAll('.reader-doc-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById('doc-btn-' + index);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Actualizar breadcrumb
+      const crumb = document.getElementById('reader-breadcrumb');
+      if (crumb) {
+        crumb.innerHTML = `<span>${doc.category}</span> / <span class="active-file">${doc.filename}</span>`;
+      }
+
+      // Actualizar enlace GitHub
+      const ghLink = document.getElementById('github-doc-link');
+      if (ghLink) {
+        ghLink.href = 'https://github.com/JordyMontalvo/documentationsifrah/blob/master/' + doc.relPath;
+      }
+
+      // Renderizar Markdown
+      const renderTarget = document.getElementById('markdown-render-target');
+      if (renderTarget) {
+        if (typeof marked !== 'undefined') {
+          renderTarget.innerHTML = marked.parse(doc.content);
+        } else {
+          renderTarget.innerText = doc.content;
+        }
+
+        // Resaltar sintaxis de código
+        if (typeof hljs !== 'undefined') {
+          renderTarget.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block);
+          });
+        }
+      }
+    }
+
+    function filterDocs(query) {
+      if (!window.SIFRAH_DOCS) return;
+      const q = query.toLowerCase().trim();
+      const badge = document.getElementById('doc-count-badge');
+
+      if (!q) {
+        if (badge) badge.textContent = `${window.SIFRAH_DOCS.length} documentos`;
+        renderDocTree(window.SIFRAH_DOCS);
+        return;
+      }
+
+      const filtered = window.SIFRAH_DOCS.filter(d => 
+        (d.title && d.title.toLowerCase().includes(q)) ||
+        (d.filename && d.filename.toLowerCase().includes(q)) ||
+        (d.content && d.content.toLowerCase().includes(q))
+      );
+
+      if (badge) badge.textContent = `${filtered.length} encontrados`;
+      renderDocTree(filtered);
+    }
+
+    function resetDocSearch() {
+      const input = document.getElementById('doc-search-input');
+      if (input) input.value = '';
+      filterDocs('');
+    }
+
+    function copyCurrentMarkdown(btn) {
+      if (!window.SIFRAH_DOCS || !window.SIFRAH_DOCS[currentDocIndex]) return;
+      const text = window.SIFRAH_DOCS[currentDocIndex].content;
+      navigator.clipboard.writeText(text).then(() => {
+        const original = btn.innerHTML;
+        btn.innerHTML = '✅ ¡Copiado!';
+        setTimeout(() => { btn.innerHTML = original; }, 2000);
+      });
+    }
+
+    // Inicializar lector automáticamente
+    window.addEventListener('DOMContentLoaded', () => {
+      initDocReader();
+    });
   </script>
 </body>
 </html>

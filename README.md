@@ -35,38 +35,32 @@ Este proyecto está configurado bajo el estándar **AI-Ready** para asistentes c
 
 ---
 
-## 📁 Estructura del Repositorio
+## 📁 Estructura del Repositorio (Organizado en 5 Ejes Lógicos)
 
 ```text
 sifrah-docs/
-├── index.html                   # Portal interactivo con visualizador 3D y visor Archify
-├── AGENTS.md                    # Manual maestro canónico para agentes de IA
-├── .cursorrules                 # Reglas automáticas para Cursor IDE
-├── package.json                 # Scripts de visualización local
+├── index.html                   # 🌐 Portal maestro con Topología 3D, Lector de Docs y AI Playbook
+├── docs-data.js                 # ⚡ Base de datos indexada en JSON de los 75 documentos Markdown
+├── AGENTS.md                    # 🤖 Manual maestro canónico para agentes de IA
+├── CONTRIBUTING.md              # 📘 Protocolo oficial de contribución para el equipo
+├── .cursorrules                 # ⚡ Reglas automáticas para Cursor IDE
+├── package.json                 # 📦 Scripts de visualización local (npm run dev)
 │
-├── archify_diagrams/            # Diagramas interactivos compilados con Archify
-│   ├── sifrah-architecture.html # Mapa global interactivo
-│   ├── sifrah-cierre-workflow.html # Flujo animado de cierre MLM
-│   └── sifrah-assistant-sequence.html # Secuencia RAG & LLM
+├── 01-arquitectura-y-reglas/     # 🏛️ Visión global, topología y reglas inquebrantables de negocio
+├── 02-desarrollo-por-capas/       # 💻 Frontend (App/Admin), Backend Node.js y Motor Cierre Go
+├── 03-ia-salud-y-datos/           # 🧠 Asistente RAG, Triage clínico, Modelos Churn y Esquemas Mongo
+├── 04-devops-y-despliegues/       # 🚀 DigitalOcean, PM2, Backups Bunny y Google Play Store
+├── 05-archivo-historico/          # 📚 Toda la documentación previa organizada por subsistema
+│   ├── server/                  # Documentación de endpoints, email, backups, CORS
+│   ├── app/                     # Documentación de componentes, afiliados, debug
+│   ├── admin/                   # Documentación de backoffice y árboles MLM
+│   ├── db/                      # Modelado de datos y sistemas de rangos
+│   ├── ai_prediccion/           # Memorias técnicas y manuales de modelos predictivos
+│   ├── infraestructura/         # Procedimientos de migración y servidores
+│   └── funcionales/             # Documentos funcionales Word/PDF de negocio
 │
-├── modules/                     # Módulos técnicos estandarizados
-│   ├── 01-arquitectura-global.md
-│   ├── 02-frontends-app-admin.md
-│   ├── 03-backend-api-hub.md
-│   ├── 04-cierre-engine-golang.md
-│   ├── 05-ia-rag-asistente.md
-│   ├── 06-esquemas-mongodb.md
-│   ├── 07-ai-playbook-prompts.md
-│   └── 08-devops-y-despliegues.md
-│
-└── repos_docs/                  # 📚 Toda la documentación original del ecosistema
-    ├── server/                  # 11 documentos de Node.js, emails, CORS, backups
-    ├── app/                     # 11 documentos de Vue/Capacitor, afiliados, debug, Play Store
-    ├── admin/                   # 7 documentos de Backoffice, árboles, MLM
-    ├── db/                      # 5 documentos de MongoDB, rangos, esquemas
-    ├── ai_prediccion/           # 23 documentos de Machine Learning y manuales
-    ├── infraestructura/         # 5 documentos de despliegue, PM2 y AWS EC2
-    └── funcionales/             # 4 documentos de especificaciones del negocio (vouchers, bonos)
+├── archify_diagrams/            # 📊 Diagramas interactivos vectoriales (Archify Engine)
+└── templates/                   # 📝 Plantillas ADR para registrar decisiones mayores
 ```
 
 ---
