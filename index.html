@@ -1058,13 +1058,259 @@
       border: 1px solid rgba(255, 255, 255, 0.06);
       color: #cbd5e1;
     }
-    .markdown-render blockquote {
-      border-left: 4px solid #10b981;
-      background: rgba(16, 185, 129, 0.05);
-      padding: 12px 18px;
-      margin: 16px 0;
-      border-radius: 0 8px 8px 0;
+    /* SPOTLIGHT COMMAND PALETTE */
+    .spotlight-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 17, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 9999;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 12vh;
+      animation: spotlightFadeIn 0.18s ease-out;
+    }
+    .spotlight-overlay.open {
+      display: flex;
+    }
+    @keyframes spotlightFadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .spotlight-box {
+      background: #0d1424;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(16, 185, 129, 0.15);
+      border-radius: 18px;
+      width: 90%;
+      max-width: 680px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .spotlight-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: #080d19;
+    }
+    .spotlight-icon {
+      font-size: 18px;
+      color: #10b981;
+    }
+    .spotlight-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      font-family: inherit;
+      outline: none;
+    }
+    .spotlight-esc-badge {
+      font-size: 10px;
+      color: #64748b;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .spotlight-hints {
+      padding: 8px 20px;
+      font-size: 11px;
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      gap: 16px;
+    }
+    .spotlight-hints kbd {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 10px;
       color: #94a3b8;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .spotlight-results {
+      max-height: 420px;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    .spotlight-item {
+      padding: 12px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border: 1px solid transparent;
+      margin-bottom: 4px;
+    }
+    .spotlight-item:hover, .spotlight-item.selected {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+    .spotlight-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .spotlight-item-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .spotlight-item-cat {
+      font-size: 10.5px;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    .spotlight-item-snippet {
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .spotlight-match {
+      color: #6ee7b7;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    /* ZEN MODE */
+    .reader-layout.zen-mode {
+      grid-template-columns: 1fr !important;
+      max-width: 900px;
+      margin: 10px auto;
+    }
+    .reader-layout.zen-mode .reader-sidebar,
+    .reader-layout.zen-mode .reader-toc-aside {
+      display: none !important;
+    }
+    .reader-layout.zen-mode .reader-content-card {
+      padding: 40px 50px;
+    }
+    .btn-zen.active {
+      background: rgba(16, 185, 129, 0.25) !important;
+      color: #34d399 !important;
+      border-color: #10b981 !important;
+    }
+
+    /* FOOTER PREV / NEXT NAVIGATION */
+    .reader-nav-footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .reader-nav-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-decoration: none;
+    }
+    .reader-nav-card:hover {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.35);
+      transform: translateY(-2px);
+    }
+    .reader-nav-card.next {
+      text-align: right;
+    }
+    .reader-nav-lbl {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+    }
+    .reader-nav-title {
+      font-size: 13.5px;
+      color: #fff;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* INTERACTIVE DOC BUTTON IN 3D TOPOLOGY */
+    .btn-layer-doc {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-layer-doc:hover {
+      background: #10b981;
+      color: #040711;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* PRINT STYLES */
+    @media print {
+      body {
+        background: #fff !important;
+        color: #111 !important;
+      }
+      .grid-bg, .ambient-glow-1, .ambient-glow-2, .hero, .tabs-wrapper,
+      .reader-sidebar, .reader-toc-aside, .reader-header-bar, .reader-nav-footer,
+      .spotlight-overlay, footer {
+        display: none !important;
+      }
+      .main-wrap, .tab-panel, .reader-layout, .reader-content-card {
+        display: block !important;
+        background: #fff !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+      .markdown-render {
+        color: #000 !important;
+        font-size: 12pt !important;
+      }
+      .markdown-render h1, .markdown-render h2, .markdown-render h3 {
+        color: #000 !important;
+        page-break-after: avoid;
+      }
+      .markdown-render pre, .markdown-render code {
+        background: #f1f5f9 !important;
+        color: #000 !important;
+        border: 1px solid #cbd5e1 !important;
+      }
     }
   </style>
 </head>
@@ -1135,6 +1381,7 @@
                 <span class="tag-chip">Vuex State</span>
                 <span class="tag-chip">Android SDK 34</span>
               </div>
+              <button type="button" class="btn-layer-doc" onclick="openDocByFilename('02-frontends-app-admin.md')">📖 Ver Documentación Oficial ↗</button>
             </div>
             <div class="layer-stats-col">
               <div class="val">com.sifrah.app</div>
@@ -1164,6 +1411,7 @@
                 <span class="tag-chip">Bunny.net Storage</span>
                 <span class="tag-chip">CORS Guard</span>
               </div>
+              <button type="button" class="btn-layer-doc" onclick="openDocByFilename('03-backend-api-hub.md')">📖 Ver Documentación Oficial ↗</button>
             </div>
             <div class="layer-stats-col">
               <div class="val">api.serve-sifrah.xyz</div>
@@ -1194,6 +1442,7 @@
                 <span class="tag-chip">Flask AI (5000/5002)</span>
                 <span class="tag-chip">RandomForest</span>
               </div>
+              <button type="button" class="btn-layer-doc" onclick="openDocByFilename('04-cierre-engine-golang.md')">📖 Ver Documentación Oficial ↗</button>
             </div>
             <div class="layer-stats-col">
               <div class="val">&lt; 15 seg</div>
@@ -1223,6 +1472,7 @@
                 <span class="tag-chip">AWS us-east-2</span>
                 <span class="tag-chip">Daily Dump Backup</span>
               </div>
+              <button type="button" class="btn-layer-doc" onclick="openDocByFilename('06-esquemas-mongodb.md')">📖 Ver Documentación Oficial ↗</button>
             </div>
             <div class="layer-stats-col">
               <div class="val">sifrah (db)</div>
@@ -1302,16 +1552,25 @@
             <div class="reader-crumb" id="reader-breadcrumb">
               <span>01. Arquitectura y Reglas</span> / <span class="active-file" id="reader-active-filename">01-arquitectura-global.md</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
               <div class="reader-meta-stats" id="reader-stats-pill">⏱️ 3 min • 📝 120 líneas</div>
-              <button type="button" style="background: rgba(255,255,255,0.08); color: #fff; padding: 6px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="copyCurrentMarkdown(this)">📋 Copiar Markdown</button>
-              <a id="github-doc-link" href="https://github.com/JordyMontalvo/documentationsifrah" target="_blank" style="background: rgba(16,185,129,0.15); color: #34d399; padding: 6px 14px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.3); text-decoration: none; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">GitHub ↗</a>
+              <button type="button" id="btn-fav-star" onclick="toggleFavoriteCurrentDoc(this)" title="Guardar en favoritos" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #fbbf24; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 13px;">☆</button>
+              <button type="button" style="background: rgba(139, 92, 246, 0.18); color: #c4b5fd; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.35); cursor: pointer; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;" onclick="copyPromptForAI(this)" title="Copiar empaquetado para Cursor, Claude o ChatGPT">🤖 Copiar para IA</button>
+              <button type="button" style="background: rgba(255,255,255,0.08); color: #fff; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="copyCurrentMarkdown(this)">📋 Markdown</button>
+              <button type="button" id="btn-toggle-zen" style="background: rgba(255,255,255,0.06); color: #94a3b8; padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="toggleZenMode(this)" title="Modo Zen (Lectura expandida sin barras laterales)">⛶ Zen</button>
+              <button type="button" style="background: rgba(255,255,255,0.06); color: #94a3b8; padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="window.print()" title="Imprimir o Guardar como PDF">🖨️ PDF</button>
+              <a id="github-doc-link" href="https://github.com/JordyMontalvo/documentationsifrah" target="_blank" style="background: rgba(16,185,129,0.15); color: #34d399; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.3); text-decoration: none; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">GitHub ↗</a>
             </div>
           </div>
 
           <div class="markdown-render" id="markdown-render-target">
             <!-- El contenido Markdown se renderiza aquí -->
           </div>
+
+          <!-- NAVEGACIÓN ANTERIOR / SIGUIENTE -->
+          <footer class="reader-nav-footer" id="reader-nav-footer" aria-label="Navegación entre documentos">
+            <!-- Tarjetas de Anterior / Siguiente -->
+          </footer>
         </article>
 
         <!-- MINIMAP / TABLA DE CONTENIDOS DINÁMICA (TOC) -->
@@ -1925,6 +2184,9 @@ Requisitos:
         ghLink.href = 'https://github.com/JordyMontalvo/documentationsifrah/blob/master/' + doc.relPath;
       }
 
+      // Actualizar estado de favorito
+      updateFavoriteButton(index);
+
       // Renderizar Markdown
       const renderTarget = document.getElementById('markdown-render-target');
       if (renderTarget) {
@@ -1945,6 +2207,7 @@ Requisitos:
         enhanceCallouts(renderTarget);
         enhanceCodeBlocks(renderTarget);
         buildTableOfContents(renderTarget);
+        renderNavFooter(index);
 
         // Scroll suave al inicio del artículo
         const scrollCard = document.getElementById('reader-content-card');
@@ -2078,22 +2341,276 @@ Requisitos:
       }
     }
 
+    // ABRIR DOCUMENTO POR NOMBRE (DESDE TOPOLOGÍA 3D)
+    function openDocByFilename(filename) {
+      if (!window.SIFRAH_DOCS) return;
+      const idx = window.SIFRAH_DOCS.findIndex(d => d.filename === filename || d.relPath.includes(filename));
+      if (idx !== -1) {
+        const tabBtn = document.querySelectorAll('.tab-btn')[1]; // Tab biblioteca
+        if (tabBtn) showTab('tab-reader', tabBtn);
+        loadDoc(idx);
+      }
+    }
+
+    // COPIAR PROMPT EMPAQUETADO PARA CURSOR / CLAUDE / CHATGPT
+    function copyPromptForAI(btn) {
+      if (!window.SIFRAH_DOCS || !window.SIFRAH_DOCS[currentDocIndex]) return;
+      const doc = window.SIFRAH_DOCS[currentDocIndex];
+
+      const promptTemplate = `# Contexto Técnico Oficial • Sifrah Ecosystem Architecture
+Módulo: "${doc.title}"
+Archivo fuente: ${doc.filename} (${doc.relPath})
+Categoría: ${doc.category}
+
+## 🛡️ Directivas Mandatorias del Desarrollador / Agente IA:
+Actúa como desarrollador senior del ecosistema Sifrah. Antes de escribir código, cumple estrictamente las siguientes reglas canónicas:
+1. Billetera y Saldos: NUNCA alterar user.wallet_balance directamente en MongoDB. SIEMPRE usar wallet-lock.js con mutex y registrar transacciones auditables.
+2. Motor MLM: Respetar compresión dinámica ascendente y relaciones unilevel/binarias. Los cálculos pesados de cierre se procesan en el binario compilado de Go (cierre_engine), nunca en Node.js.
+3. Guardrails Clínicos: En el asistente de salud, NUNCA saltarse evaluateMedicalGuardrails(query). En emergencias médicas (dolor torácico, hemorragia, disnea severa), bloquear suplementos y derivar a un hospital.
+4. Base de Datos: La persistencia central reside en AWS EC2 (Ohio). Prohibido dropDatabase() o mutaciones masivas destructivas.
+
+---
+## 📄 Especificación Técnica del Módulo:
+${doc.content}
+`;
+
+      navigator.clipboard.writeText(promptTemplate).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '✅ ¡Copiado para IA!';
+        btn.style.background = 'rgba(16, 185, 129, 0.25)';
+        btn.style.color = '#34d399';
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.style.background = '';
+          btn.style.color = '';
+        }, 2200);
+      });
+    }
+
+    // MODO ZEN (LECTURA EXPANDIDA)
+    function toggleZenMode(btn) {
+      const layout = document.querySelector('.reader-layout');
+      if (!layout) return;
+      layout.classList.toggle('zen-mode');
+      const isZen = layout.classList.contains('zen-mode');
+      if (btn) {
+        btn.innerHTML = isZen ? '✕ Salir Zen' : '⛶ Zen';
+        if (isZen) btn.classList.add('active');
+        else btn.classList.remove('active');
+      }
+    }
+
+    // FAVORITOS LOCALSTORAGE
+    function getFavorites() {
+      try {
+        return JSON.parse(localStorage.getItem('sifrah_fav_docs') || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function toggleFavoriteCurrentDoc(btn) {
+      if (!window.SIFRAH_DOCS || !window.SIFRAH_DOCS[currentDocIndex]) return;
+      const doc = window.SIFRAH_DOCS[currentDocIndex];
+      let favs = getFavorites();
+      const idx = favs.indexOf(doc.relPath);
+      if (idx !== -1) {
+        favs.splice(idx, 1);
+      } else {
+        favs.push(doc.relPath);
+      }
+      localStorage.setItem('sifrah_fav_docs', JSON.stringify(favs));
+      updateFavoriteButton(currentDocIndex);
+    }
+
+    function updateFavoriteButton(index) {
+      const btn = document.getElementById('btn-fav-star');
+      if (!btn || !window.SIFRAH_DOCS || !window.SIFRAH_DOCS[index]) return;
+      const doc = window.SIFRAH_DOCS[index];
+      const favs = getFavorites();
+      const isFav = favs.includes(doc.relPath);
+      btn.innerHTML = isFav ? '★' : '☆';
+      btn.title = isFav ? 'Eliminar de favoritos' : 'Guardar en favoritos';
+      btn.style.color = isFav ? '#fbbf24' : '#64748b';
+    }
+
+    // PIE DE PÁGINA NAVEGACIÓN ANTERIOR / SIGUIENTE
+    function renderNavFooter(index) {
+      const footer = document.getElementById('reader-nav-footer');
+      if (!footer || !window.SIFRAH_DOCS) return;
+
+      const prevDoc = index > 0 ? window.SIFRAH_DOCS[index - 1] : null;
+      const nextDoc = index < window.SIFRAH_DOCS.length - 1 ? window.SIFRAH_DOCS[index + 1] : null;
+
+      let html = '';
+      if (prevDoc) {
+        html += `
+          <div class="reader-nav-card prev" onclick="loadDoc(${index - 1})">
+            <span class="reader-nav-lbl">← Anterior</span>
+            <span class="reader-nav-title">${prevDoc.title || prevDoc.filename}</span>
+          </div>
+        `;
+      } else {
+        html += '<div></div>';
+      }
+
+      if (nextDoc) {
+        html += `
+          <div class="reader-nav-card next" onclick="loadDoc(${index + 1})">
+            <span class="reader-nav-lbl">Siguiente →</span>
+            <span class="reader-nav-title">${nextDoc.title || nextDoc.filename}</span>
+          </div>
+        `;
+      } else {
+        html += '<div></div>';
+      }
+
+      footer.innerHTML = html;
+    }
+
+    // ==========================================
+    // SPOTLIGHT COMMAND PALETTE (⌘K MODAL)
+    // ==========================================
+    let spotlightResults = [];
+    let selectedSpotlightIndex = 0;
+
+    function openSpotlight() {
+      const modal = document.getElementById('spotlight-modal');
+      const input = document.getElementById('spotlight-input');
+      if (!modal || !input) return;
+      modal.classList.add('open');
+      input.value = '';
+      handleSpotlightSearch('');
+      setTimeout(() => input.focus(), 50);
+    }
+
+    function closeSpotlight() {
+      const modal = document.getElementById('spotlight-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function closeSpotlightOnBackdrop(e) {
+      if (e.target && e.target.id === 'spotlight-modal') {
+        closeSpotlight();
+      }
+    }
+
+    function handleSpotlightSearch(query) {
+      if (!window.SIFRAH_DOCS) return;
+      const q = query.toLowerCase().trim();
+      selectedSpotlightIndex = 0;
+
+      if (!q) {
+        // Mostrar los primeros documentos destacados
+        spotlightResults = window.SIFRAH_DOCS.slice(0, 7).map((d) => ({
+          doc: d,
+          realIdx: window.SIFRAH_DOCS.indexOf(d),
+          snippet: d.category + ' • ' + d.filename
+        }));
+      } else {
+        const matches = [];
+        window.SIFRAH_DOCS.forEach((d, idx) => {
+          let score = 0;
+          let snippet = '';
+
+          if (d.title && d.title.toLowerCase().includes(q)) score += 10;
+          if (d.filename && d.filename.toLowerCase().includes(q)) score += 8;
+
+          const contentLower = d.content.toLowerCase();
+          const matchPos = contentLower.indexOf(q);
+          if (matchPos !== -1) {
+            score += 5;
+            const start = Math.max(0, matchPos - 45);
+            const end = Math.min(d.content.length, matchPos + q.length + 55);
+            snippet = '...' + d.content.substring(start, end).replace(/\n/g, ' ') + '...';
+          } else {
+            snippet = d.category;
+          }
+
+          if (score > 0) {
+            matches.push({ doc: d, realIdx: idx, score, snippet });
+          }
+        });
+
+        matches.sort((a, b) => b.score - a.score);
+        spotlightResults = matches.slice(0, 8);
+      }
+
+      renderSpotlightResults(q);
+    }
+
+    function renderSpotlightResults(query) {
+      const container = document.getElementById('spotlight-results');
+      if (!container) return;
+
+      if (!spotlightResults.length) {
+        container.innerHTML = '<div style="color:var(--text-dim); padding:24px; text-align:center; font-size:13px;">No se encontraron resultados para esa búsqueda.</div>';
+        return;
+      }
+
+      let html = '';
+      spotlightResults.forEach((item, idx) => {
+        const isSel = idx === selectedSpotlightIndex;
+        let snippetText = item.snippet;
+
+        if (query) {
+          const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+          snippetText = snippetText.replace(re, '<mark class="spotlight-match">$1</mark>');
+        }
+
+        html += `
+          <div class="spotlight-item ${isSel ? 'selected' : ''}" onclick="selectSpotlightItem(${item.realIdx})">
+            <div class="spotlight-item-top">
+              <span class="spotlight-item-title">📄 ${item.doc.title || item.doc.filename}</span>
+              <span class="spotlight-item-cat">${item.doc.category.split(' ')[1] || item.doc.category}</span>
+            </div>
+            <div class="spotlight-item-snippet">${snippetText}</div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function selectSpotlightItem(realIdx) {
+      closeSpotlight();
+      const tabBtn = document.querySelectorAll('.tab-btn')[1]; // Tab biblioteca
+      if (tabBtn) showTab('tab-reader', tabBtn);
+      loadDoc(realIdx);
+    }
+
+    function handleSpotlightKeydown(e) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (spotlightResults.length) {
+          selectedSpotlightIndex = (selectedSpotlightIndex + 1) % spotlightResults.length;
+          renderSpotlightResults(document.getElementById('spotlight-input').value);
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (spotlightResults.length) {
+          selectedSpotlightIndex = (selectedSpotlightIndex - 1 + spotlightResults.length) % spotlightResults.length;
+          renderSpotlightResults(document.getElementById('spotlight-input').value);
+        }
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (spotlightResults.length && spotlightResults[selectedSpotlightIndex]) {
+          selectSpotlightItem(spotlightResults[selectedSpotlightIndex].realIdx);
+        }
+      } else if (e.key === 'Escape') {
+        closeSpotlight();
+      }
+    }
+
     function setupKeyboardShortcuts() {
       window.addEventListener('keydown', (e) => {
         if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
           e.preventDefault();
-          const tabBtn = document.querySelectorAll('.tab-btn')[1]; // Tab biblioteca
-          if (tabBtn) showTab('tab-reader', tabBtn);
-          const searchInput = document.getElementById('doc-search-input');
-          if (searchInput) {
-            searchInput.focus();
-            searchInput.select();
-          }
+          openSpotlight();
         } else if (e.key === 'Escape') {
-          const searchInput = document.getElementById('doc-search-input');
-          if (searchInput && document.activeElement === searchInput) {
-            resetDocSearch();
-            searchInput.blur();
+          const modal = document.getElementById('spotlight-modal');
+          if (modal && modal.classList.contains('open')) {
+            closeSpotlight();
           }
         }
       });
@@ -2114,5 +2631,24 @@ Requisitos:
       initDocReader();
     });
   </script>
+
+  <!-- COMMAND PALETTE MODAL (SPOTLIGHT ⌘K) -->
+  <div class="spotlight-overlay" id="spotlight-modal" onclick="closeSpotlightOnBackdrop(event)" role="dialog" aria-modal="true" aria-label="Búsqueda rápida en documentación">
+    <div class="spotlight-box">
+      <div class="spotlight-header">
+        <span class="spotlight-icon">🔍</span>
+        <input type="text" id="spotlight-input" class="spotlight-input" placeholder="Buscar en 69 documentos... (ej. wallet-lock, cierre, Gemini, EC2)" oninput="handleSpotlightSearch(this.value)" onkeydown="handleSpotlightKeydown(event)" autocomplete="off">
+        <span class="spotlight-esc-badge" onclick="closeSpotlight()">ESC</span>
+      </div>
+      <div class="spotlight-hints">
+        <span><kbd>↑</kbd> <kbd>↓</kbd> Navegar</span>
+        <span><kbd>↵</kbd> Abrir documento</span>
+        <span><kbd>Esc</kbd> Cerrar</span>
+      </div>
+      <div class="spotlight-results" id="spotlight-results">
+        <!-- Resultados generados dinámicamente -->
+      </div>
+    </div>
+  </div>
 </body>
 </html>
