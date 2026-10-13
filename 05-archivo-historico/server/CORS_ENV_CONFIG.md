@@ -1,5 +1,9 @@
 # Variables de Entorno para CORS
 
+> [!NOTE]
+> **DOCUMENTO HISTÓRICO:**
+> Esta configuración corresponde al despliegue previo en **Heroku**. La infraestructura de producción actual opera en un Droplet de **DigitalOcean** con proxy Nginx y **Vercel** para los frontends.
+
 ## Configuración Recomendada
 
 Para mayor seguridad, configura estas variables de entorno en Heroku:

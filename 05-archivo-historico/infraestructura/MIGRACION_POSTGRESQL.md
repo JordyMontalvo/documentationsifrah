@@ -1,5 +1,9 @@
 # Guía de Migración de MongoDB a PostgreSQL (Prisma)
 
+> [!WARNING]
+> **DOCUMENTO HISTÓRICO / PRUEBA DE CONCEPTO REVERTIDA:**
+> Esta migración fue una prueba de concepto que fue **descartada y revertida**. Sifrah opera canónicamente sobre **MongoDB en AWS EC2 (Ohio)**. No implementar consultas de Prisma en producción sin autorización explícita.
+
 Esta documentación recopila todos los problemas, retos y soluciones encontrados durante la prueba de concepto para migrar SIFRAH de MongoDB a PostgreSQL usando Prisma ORM.
 
 ## Resumen del Entorno

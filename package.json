@@ -6,7 +6,9 @@
   "scripts": {
     "start": "npx serve . -p 8080",
     "dev": "npx serve . -p 8080",
-    "open": "open index.html"
+    "open": "open index.html",
+    "build-docs": "node build-docs.js",
+    "update-docs": "node build-docs.js"
   },
   "keywords": [
     "sifrah",

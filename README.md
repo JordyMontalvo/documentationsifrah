@@ -68,22 +68,25 @@ sifrah-docs/
 ## 👥 Cómo Alimentar y Colaborar en esta Documentación
 
 Para agregar nuevas características o documentar cambios en el sistema:
-1. Crea o actualiza el archivo Markdown correspondiente en `modules/`.
-2. Si creas nuevos endpoints o colecciones, actualiza [`modules/06-esquemas-mongodb.md`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/modules/06-esquemas-mongodb.md) y [`AGENTS.md`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/AGENTS.md).
-3. Si actualizas un diagrama de arquitectura, modifica el archivo `.candidate.json` correspondiente en `archify_diagrams/`.
-4. Haz commit y push al repositorio de GitHub:
+1. Crea o actualiza el archivo Markdown en el eje temático correspondiente (`01-`, `02-`, `03-`, `04-`).
+2. Si tomas decisiones importantes de arquitectura, usa la plantilla [templates/ADR_TEMPLATE.md](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/templates/ADR_TEMPLATE.md).
+3. Re-indexa el catálogo ejecutando:
+   ```bash
+   npm run build-docs
+   ```
+4. Haz commit y push a la rama `master`:
    ```bash
    git add .
    git commit -m "docs: actualizar módulo de comisiones"
-   git push origin main
+   git push origin master
    ```
 
 ---
 
-## 🌐 Publicación en GitHub Pages (Opcional)
+## 🌐 Publicación en GitHub Pages
 
 Este repositorio está preparado para funcionar como una web estática en **GitHub Pages**:
-1. Sube este repositorio a GitHub (ej. `github.com/tu-organizacion/sifrah-docs`).
+1. Entra a tu repositorio: `https://github.com/JordyMontalvo/documentationsifrah`.
 2. Ve a **Settings > Pages**.
-3. En **Source**, selecciona `Deploy from a branch` -> rama `main` -> carpeta `/ (root)`.
-4. ¡Listo! Tendrás el portal interactivo accesible públicamente en `https://tu-organizacion.github.io/sifrah-docs/`.
+3. En **Source**, selecciona `Deploy from a branch` -> rama `master` -> carpeta `/ (root)`.
+4. ¡Listo! Tendrás el portal interactivo y el visor de documentos en vivo en la web.
