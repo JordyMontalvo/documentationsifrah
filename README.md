@@ -49,15 +49,24 @@ sifrah-docs/
 │   ├── sifrah-cierre-workflow.html # Flujo animado de cierre MLM
 │   └── sifrah-assistant-sequence.html # Secuencia RAG & LLM
 │
-└── modules/                     # Módulos técnicos en Markdown
-    ├── 01-arquitectura-global.md
-    ├── 02-frontends-app-admin.md
-    ├── 03-backend-api-hub.md
-    ├── 04-cierre-engine-golang.md
-    ├── 05-ia-rag-asistente.md
-    ├── 06-esquemas-mongodb.md
-    ├── 07-ai-playbook-prompts.md
-    └── 08-devops-y-despliegues.md
+├── modules/                     # Módulos técnicos estandarizados
+│   ├── 01-arquitectura-global.md
+│   ├── 02-frontends-app-admin.md
+│   ├── 03-backend-api-hub.md
+│   ├── 04-cierre-engine-golang.md
+│   ├── 05-ia-rag-asistente.md
+│   ├── 06-esquemas-mongodb.md
+│   ├── 07-ai-playbook-prompts.md
+│   └── 08-devops-y-despliegues.md
+│
+└── repos_docs/                  # 📚 Toda la documentación original del ecosistema
+    ├── server/                  # 11 documentos de Node.js, emails, CORS, backups
+    ├── app/                     # 11 documentos de Vue/Capacitor, afiliados, debug, Play Store
+    ├── admin/                   # 7 documentos de Backoffice, árboles, MLM
+    ├── db/                      # 5 documentos de MongoDB, rangos, esquemas
+    ├── ai_prediccion/           # 23 documentos de Machine Learning y manuales
+    ├── infraestructura/         # 5 documentos de despliegue, PM2 y AWS EC2
+    └── funcionales/             # 4 documentos de especificaciones del negocio (vouchers, bonos)
 ```
 
 ---
