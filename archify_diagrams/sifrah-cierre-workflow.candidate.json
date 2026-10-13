@@ -1,0 +1,57 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Flujo de Cierre de Periodos y Liquidación MLM",
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "output": "docs/archify_diagrams/sifrah-cierre-workflow.html"
+  },
+  "lanes": [
+    { "id": "admin", "label": "1. Operaciones Corporativas" },
+    { "id": "go_engine", "label": "2. Cierre Engine (Golang Core)" },
+    { "id": "db", "label": "3. AWS MongoDB Persistence" },
+    { "id": "app", "label": "4. Distribuidores & Billeteras" }
+  ],
+  "phases": [
+    { "id": "init", "label": "Fase 1: Bloqueo de Periodo", "fromCol": 0, "toCol": 1 },
+    { "id": "calc", "label": "Fase 2: Cálculo Concurrente", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "payout", "label": "Fase 3: Dispersión & Notificación", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "groups": [
+    { "id": "go_compute", "label": "Cálculo Masivo con Goroutines", "lane": "go_engine", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "wallet_credit", "label": "Acreditación Contable", "lane": "app", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "mainPath": ["trigger_admin", "lock_orders", "load_tree", "calc_bonuses", "save_ledger", "credit_wallet"],
+  "nodes": [
+    { "id": "trigger_admin", "lane": "admin", "col": 0, "type": "frontend", "label": "Admin Panel", "sublabel": "Cerrar Periodo Quincenal", "width": 140 },
+    { "id": "lock_orders", "lane": "admin", "col": 1, "type": "security", "label": "Freeze Orders", "sublabel": "Bloquear compras del ciclo", "tag": "Anti-fraude", "width": 140 },
+    { "id": "load_tree", "lane": "go_engine", "col": 2, "type": "backend", "label": "Load Genealogy", "sublabel": "Árbol en RAM (Grafos)", "tag": "In-Memory", "width": 140 },
+    { "id": "calc_bonuses", "lane": "go_engine", "col": 3, "type": "backend", "label": "Goroutines Calc", "sublabel": "Rangos + 5 Bonos MLM", "tag": "Compresión Dinámica", "width": 140 },
+    { "id": "fetch_db", "lane": "db", "col": 2, "type": "database", "label": "Read Collections", "sublabel": "users, orders, points", "width": 140 },
+    { "id": "save_ledger", "lane": "db", "col": 4, "type": "database", "label": "Write Ledger", "sublabel": "Transacciones auditables", "tag": "Atomic Write", "width": 140 },
+    { "id": "credit_wallet", "lane": "app", "col": 4, "type": "messagebus", "label": "Update Wallets", "sublabel": "Saldo disponible para cobro", "width": 140 },
+    { "id": "dist_notify", "lane": "app", "col": 5, "type": "external", "label": "Distribuidor App", "sublabel": "Notificación de Rango & Cash", "width": 140 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "trigger_admin", "to": "lock_orders", "label": "Inicia cierre" },
+    { "id": "e2", "from": "lock_orders", "to": "load_tree", "label": "Dispara Go", "variant": "emphasis" },
+    { "id": "e3", "from": "fetch_db", "to": "load_tree", "label": "Stream orders", "variant": "dashed" },
+    { "id": "e4", "from": "load_tree", "to": "calc_bonuses", "label": "Evalúa ramas" },
+    { "id": "e5", "from": "calc_bonuses", "to": "save_ledger", "label": "Persiste bonos", "variant": "emphasis" },
+    { "id": "e6", "from": "save_ledger", "to": "credit_wallet", "label": "Actualiza saldo" },
+    { "id": "e7", "from": "credit_wallet", "to": "dist_notify", "label": "Push alert", "variant": "emphasis" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Garantías de Ejecución",
+      "items": [
+        "Cero inconsistencias: Compresión dinámica automática para distribuidores inactivos",
+        "Alta concurrencia: El binario de Go liquida toda la red en segundos sin tocar la UI",
+        "Auditoría inmutable: Registro de kardex y transacciones antes de abrir el saldo a retiro"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Secuencia RAG + Guardrails y Gemini en Sifrah",
+    "output": "docs/archify_diagrams/sifrah-assistant-sequence.html",
+    "viewBox": [1120, 720],
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "participants": [
+    { "id": "user", "type": "external", "label": "Usuario / Cliente", "sublabel": "App Móvil Sifrah" },
+    { "id": "app_ui", "type": "frontend", "label": "SifrahAssistant", "sublabel": "Vue.js Widget" },
+    { "id": "server_api", "type": "backend", "label": "API Route", "sublabel": "POST /api/app/assistant" },
+    { "id": "guardrail", "type": "security", "label": "Triage Clínico", "sublabel": "Guardrails Médicos" },
+    { "id": "rag_engine", "type": "backend", "label": "Motor RAG & Combos", "sublabel": "ai-catalog.js" },
+    { "id": "gemini_ai", "type": "cloud", "label": "Google Gemini", "sublabel": "3.5 Flash Lite / 3.8" },
+    { "id": "aws_mongo", "type": "database", "label": "AWS MongoDB", "sublabel": "assistant_conversations" }
+  ],
+  "segments": [
+    { "from": 150, "to": 280, "label": "1. Captura & Guardrail de Seguridad" },
+    { "from": 290, "to": 460, "label": "2. RAG Semántico & Inferencia LLM" },
+    { "from": 470, "to": 610, "label": "3. Respuesta & Logging Asíncrono" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "app_ui", "y": 165, "label": "Escribe: 'Me duelen las rodillas'", "variant": "default" },
+    { "id": "m2", "from": "app_ui", "to": "server_api", "y": 200, "label": "POST { query, refCode, history }", "variant": "emphasis" },
+    { "id": "m3", "from": "server_api", "to": "guardrail", "y": 235, "label": "evaluateMedicalGuardrails()", "variant": "security" },
+    { "id": "m4", "from": "guardrail", "to": "server_api", "y": 270, "label": "Seguro (Sin alarmas críticas)", "variant": "return" },
+
+    { "id": "m5", "from": "server_api", "to": "rag_engine", "y": 310, "label": "retrieveRelevantProducts('rodillas')", "variant": "default" },
+    { "id": "m6", "from": "rag_engine", "to": "server_api", "y": 350, "label": "REJUVENECE + COMBO_ARTICULAR_PRO (Detox)", "variant": "return" },
+    { "id": "m7", "from": "server_api", "to": "gemini_ai", "y": 390, "label": "generateContent (Prompt + Chunks)", "variant": "emphasis" },
+    { "id": "m8", "from": "gemini_ai", "to": "server_api", "y": 430, "label": "Texto empático + Posología sugerida", "variant": "return" },
+
+    { "id": "m9", "from": "server_api", "to": "aws_mongo", "y": 480, "label": "logConversation() [Async Insert]", "variant": "dashed" },
+    { "id": "m10", "from": "server_api", "to": "app_ui", "y": 520, "label": "200 OK: { reply, combo, recommendedProducts }", "variant": "emphasis" },
+    { "id": "m11", "from": "app_ui", "to": "user", "y": 560, "label": "Renderiza burbuja + Botón comprar (refCode)", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "app_ui", "from": 165, "to": 565, "type": "frontend" },
+    { "participant": "server_api", "from": 200, "to": 525, "type": "backend" },
+    { "participant": "guardrail", "from": 235, "to": 275, "type": "security" },
+    { "participant": "rag_engine", "from": 310, "to": 355, "type": "backend" },
+    { "participant": "gemini_ai", "from": 390, "to": 435, "type": "cloud" },
+    { "participant": "aws_mongo", "from": 480, "to": 500, "type": "database" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Garantías del Flujo RAG",
+      "items": [
+        "Velocidad sub-segundo con Gemini 3.5 Flash Lite",
+        "Atribución 100% auditable: El refCode viaja hasta el botón de compra",
+        "Cero bloqueo: El log en MongoDB se ejecuta en segundo plano sin demorar la respuesta"
+      ]
+    }
+  ]
+}

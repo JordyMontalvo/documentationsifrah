@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sifrah Ecosystem • Master Architecture &amp; 3D Topology Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #06090f;
+      --bg-surface: #0a0f1d;
+      --bg-card: #10172a;
+      --bg-card-hover: #162038;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(16, 185, 129, 0.4);
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.28);
+      --emerald-light: #6ee7b7;
+      --cyan: #06b6d4;
+      --cyan-glow: rgba(6, 182, 212, 0.25);
+      --blue: #3b82f6;
+      --purple: #8b5cf6;
+      --purple-glow: rgba(139, 92, 246, 0.25);
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --text-head: #ffffff;
+      --text-body: #cbd5e1;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-body);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding: 0;
+      overflow-x: hidden;
+      perspective: 1200px;
+    }
+
+    /* BACKGROUND SCI-FI GRID & GLOWS */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ambient-glow-1 {
+      position: fixed;
+      top: -200px;
+      left: 15%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, var(--emerald-glow) 0%, transparent 65%);
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ambient-glow-2 {
+      position: fixed;
+      bottom: -200px;
+      right: 10%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 70%);
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 2;
+      padding: 70px 24px 40px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-subtle);
+      background: linear-gradient(180deg, rgba(10, 15, 29, 0.9) 0%, rgba(6, 9, 15, 0) 100%);
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid var(--emerald);
+      color: var(--emerald-light);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
+    }
+
+    .hero h1 {
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      color: var(--text-head);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #10b981 0%, #38bdf8 50%, #818cf8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      max-width: 860px;
+      margin: 0 auto 30px;
+      font-size: 18px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* TOP STATS TICKER */
+    .stats-ticker {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 18px;
+      border-radius: 12px;
+    }
+
+    .stat-pill .num {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--emerald-light);
+    }
+
+    .stat-pill .lbl {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* TABS NAVIGATION */
+    .tabs-wrapper {
+      position: sticky;
+      top: 16px;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px;
+      background: rgba(10, 15, 29, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      max-width: 980px;
+      margin: 0 auto 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .tab-btn:hover {
+      color: var(--text-head);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      background: rgba(16, 185, 129, 0.18);
+      color: var(--emerald-light);
+      border: 1px solid var(--emerald);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    /* MAIN CONTAINER */
+    .main-wrap {
+      position: relative;
+      z-index: 2;
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: smoothAppear 0.35s ease forwards;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes smoothAppear {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =================================================================
+       3D ISOMETRIC TOPOLOGY SECTION (WOW FACTOR)
+       ================================================================= */
+    .iso-hero-section {
+      background: linear-gradient(145deg, rgba(16, 23, 42, 0.9) 0%, rgba(10, 15, 29, 0.95) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 28px;
+      padding: 40px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+      margin-bottom: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .iso-hero-section::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.8) 50%, transparent 100%);
+    }
+
+    .section-intro {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .section-intro h2 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-head);
+      margin-bottom: 6px;
+    }
+
+    .section-intro p {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 650px;
+    }
+
+    /* 3D STACKED PIPELINE */
+    .stack-3d-scene {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      perspective: 1000px;
+      margin: 30px 0;
+    }
+
+    .stack-layer {
+      background: rgba(16, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 24px 30px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      display: grid;
+      grid-template-columns: 240px 1fr 200px;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .stack-layer:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: var(--border-glow);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(16, 185, 129, 0.2);
+    }
+
+    .layer-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .layer-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .icon-emerald { background: linear-gradient(135deg, #10b981 0%, #047857 100%); color: white; }
+    .icon-cyan { background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%); color: white; }
+    .icon-purple { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: white; }
+    .icon-amber { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); color: white; }
+
+    .layer-meta h4 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-head);
+    }
+
+    .layer-meta span {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .layer-body {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .layer-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .tag-chip {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--emerald-light);
+    }
+
+    .layer-stats-col {
+      text-align: right;
+      border-left: 1px solid var(--border-subtle);
+      padding-left: 20px;
+    }
+
+    .layer-stats-col .val {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--emerald-light);
+    }
+
+    .layer-stats-col .lbl {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* CONNECTOR STREAM */
+    .stream-indicator {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      color: var(--emerald);
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      margin: -10px 0;
+      opacity: 0.7;
+    }
+
+    .stream-indicator .line {
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--emerald), transparent);
+    }
+
+    /* GRID DE TARJETAS 3D */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .card-3d {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-3d:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .badge-iso {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .b-green { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .b-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .b-purple { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.3); }
+    .b-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    .card-3d h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-head);
+      margin-bottom: 8px;
+    }
+
+    .card-3d p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    .features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 18px;
+    }
+
+    .features-list li {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .features-list li strong {
+      color: var(--text-head);
+    }
+
+    .features-list li::before {
+      content: "✦";
+      color: var(--emerald);
+      font-size: 12px;
+      margin-top: 1px;
+    }
+
+    /* CODE TERMINAL */
+    .terminal-box {
+      background: #040711;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 20px 0;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .terminal-header {
+      background: #0a0f1d;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .dot-ctrl { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .dot-r { background: #ef4444; }
+    .dot-y { background: #f59e0b; }
+    .dot-g { background: #10b981; }
+
+    .terminal-title {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      margin-left: 8px;
+    }
+
+    .terminal-code {
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+
+    .c-kw { color: #f43f5e; font-weight: 600; }
+    .c-str { color: #34d399; }
+    .c-fn { color: #38bdf8; }
+    .c-cm { color: #64748b; font-style: italic; }
+    .c-num { color: #fbbf24; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .stack-layer {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .layer-stats-col {
+        border-left: none;
+        padding-left: 0;
+        text-align: left;
+      }
+      .hero h1 { font-size: 38px; }
+      .grid-cards { grid-template-columns: 1fr; }
+    }
+
+    .arch-tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #94a3b8;
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      backdrop-filter: blur(8px);
+    }
+    .arch-tab-btn:hover {
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.35);
+      transform: translateY(-1px);
+    }
+    .arch-tab-btn.active {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(6, 182, 212, 0.22));
+      color: #10b981;
+      border-color: #10b981;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.28);
+    }
+
+    /* AI PLAYBOOK & COPY BOX STYLES */
+    .ai-hero-box {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(139, 92, 246, 0.08));
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 36px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .prompt-box {
+      background: #060913;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-top: 16px;
+      position: relative;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #94a3b8;
+      max-height: 220px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .copy-btn {
+      background: #10b981;
+      color: #040711;
+      border: none;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .copy-btn:hover {
+      background: #34d399;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    }
+    .quick-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+      font-size: 13px;
+    }
+    .quick-table th {
+      background: rgba(255, 255, 255, 0.04);
+      color: #10b981;
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-weight: 700;
+    }
+    .quick-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+    }
+    .quick-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid-bg"></div>
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="badge-pill">
+      <span>💎</span> Sifrah Enterprise Cloud &amp; AI Core
+    </div>
+    <h1>Arquitectura del <span>Ecosistema Sifrah</span></h1>
+    <p>Documentación técnica profunda del software multinivel: plataforma e-commerce, motor de comisiones de alta concurrencia en Go, modelos de predicción de liderazgo y asistente médico-nutricional RAG con Gemini 3.5/3.8 Flash.</p>
+
+    <div class="stats-ticker">
+      <div class="stat-pill"><span class="num">3</span><span class="lbl">Frontends (App/Admin/Store)</span></div>
+      <div class="stat-pill"><span class="num">120+</span><span class="lbl">Rutas API en Producción</span></div>
+      <div class="stat-pill"><span class="num">&lt; 15s</span><span class="lbl">Cálculo de Cierre Masivo (Go)</span></div>
+      <div class="stat-pill"><span class="num">1.3s</span><span class="lbl">Latencia RAG + Gemini AI</span></div>
+      <div class="stat-pill"><span class="num">100%</span><span class="lbl">AWS MongoDB Protegido</span></div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="tabs-wrapper">
+    <button type="button" class="tab-btn active" onclick="showTab('tab-topo', this)">🌌 Topología 3D</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-front', this)">📱 Frontends (Vue &amp; Mobile)</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-back', this)">⚙️ Backend API Hub</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-go', this)">🚀 Motor Cierre Go</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-ai-rag', this)">🧠 IA &amp; Asistente RAG</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-ai-dev', this)">🤖 AI Dev Playbook</button>
+    <button type="button" class="tab-btn" onclick="showTab('tab-devops', this)">☁️ Infraestructura &amp; Cloud</button>
+  </nav>
+
+  <main class="main-wrap">
+
+    <!-- =================================================================
+         TAB 1: TOPOLOGÍA ISOMÉTRICA EN CAPAS 3D
+         ================================================================= -->
+    <section id="tab-topo" class="tab-panel active">
+      <div class="iso-hero-section">
+        <div class="section-intro">
+          <div>
+            <h2>Arquitectura en Capas Isométricas 3D</h2>
+            <p>Flujo completo de extremo a extremo: cómo viajan los datos desde la interacción táctil en la app móvil hasta el cálculo en milisegundos en el cluster de servidores.</p>
+          </div>
+          <span class="badge-iso b-green">Full Stack Pipeline</span>
+        </div>
+
+        <div class="stack-3d-scene">
+          <!-- Layer 1 -->
+          <div class="stack-layer">
+            <div class="layer-badge">
+              <div class="layer-icon-box icon-emerald">📱</div>
+              <div class="layer-meta">
+                <h4>Capa 1: Clientes</h4>
+                <span>Android • iOS • Web</span>
+              </div>
+            </div>
+            <div class="layer-body">
+              <strong>Sifrah App &amp; Backoffice Admin:</strong> Construidos en Vue.js con Capacitor. Gestión de red unilevel/binaria, visualizador de árbol dinámico, catálogo interactivo con carrito de compras y widget de orientación de bienestar.
+              <div class="layer-tags">
+                <span class="tag-chip">Capacitor 5</span>
+                <span class="tag-chip">Vuex State</span>
+                <span class="tag-chip">Android SDK 34</span>
+              </div>
+            </div>
+            <div class="layer-stats-col">
+              <div class="val">com.sifrah.app</div>
+              <div class="lbl">Package Nativo</div>
+            </div>
+          </div>
+
+          <div class="stream-indicator">
+            <div class="line"></div>
+            <span>HTTPS • JWT Bearer • WebSocket Push</span>
+            <div class="line"></div>
+          </div>
+
+          <!-- Layer 2 -->
+          <div class="stack-layer">
+            <div class="layer-badge">
+              <div class="layer-icon-box icon-cyan">🖥️</div>
+              <div class="layer-meta">
+                <h4>Capa 2: API Hub</h4>
+                <span>DigitalOcean Server</span>
+              </div>
+            </div>
+            <div class="layer-body">
+              <strong>Sifrah Server (Next.js/Express):</strong> Orquesta más de 120 endpoints protegidos. Gestiona pagos con IziPay/MercadoPago, subida de comprobantes a BunnyCDN, bloqueo de billetera sin doble gasto y validaciones de rango.
+              <div class="layer-tags">
+                <span class="tag-chip">PM2 Cluster</span>
+                <span class="tag-chip">Bunny.net Storage</span>
+                <span class="tag-chip">CORS Guard</span>
+              </div>
+            </div>
+            <div class="layer-stats-col">
+              <div class="val">api.serve-sifrah.xyz</div>
+              <div class="lbl">Endpoint SSL</div>
+            </div>
+          </div>
+
+          <div class="stream-indicator">
+            <div class="line"></div>
+            <span>RPC • IPC C-Bindings • MongoDB Wire Protocol</span>
+            <div class="line"></div>
+          </div>
+
+          <!-- Layer 3 -->
+          <div class="stack-layer">
+            <div class="layer-badge">
+              <div class="layer-icon-box icon-purple">⚡</div>
+              <div class="layer-meta">
+                <h4>Capa 3: Motores de Cálculo</h4>
+                <span>Golang Engine &amp; Python AI</span>
+              </div>
+            </div>
+            <div class="layer-body">
+              <strong>Computación Paralela Especializada:</strong>
+              Micro-motor compilado en Go (<span style="color: #6ee7b7; font-family: monospace;">cierre_engine</span>) que corre con Goroutines para calcular comisiones de 10,000+ distribuidores en segundos, junto a los modelos de predicción de rangos con Scikit-Learn.
+              <div class="layer-tags">
+                <span class="tag-chip">Go Goroutines</span>
+                <span class="tag-chip">Flask AI (5000/5002)</span>
+                <span class="tag-chip">RandomForest</span>
+              </div>
+            </div>
+            <div class="layer-stats-col">
+              <div class="val">&lt; 15 seg</div>
+              <div class="lbl">Cierre Masivo</div>
+            </div>
+          </div>
+
+          <div class="stream-indicator">
+            <div class="line"></div>
+            <span>Pool TCP • Port 27017 Direct Auth</span>
+            <div class="line"></div>
+          </div>
+
+          <!-- Layer 4 -->
+          <div class="stack-layer">
+            <div class="layer-badge">
+              <div class="layer-icon-box icon-amber">🗄️</div>
+              <div class="layer-meta">
+                <h4>Capa 4: Almacenamiento</h4>
+                <span>AWS EC2 MongoDB</span>
+              </div>
+            </div>
+            <div class="layer-body">
+              <strong>Base de Datos Central:</strong> Alojada en una instancia EC2 dedicada en AWS Ohio (us-east-2). 30+ colecciones de usuarios, transacciones contables, árboles de genealogía, kardex de productos y auditoría médica de conversaciones.
+              <div class="layer-tags">
+                <span class="tag-chip">MongoDB 6.x</span>
+                <span class="tag-chip">AWS us-east-2</span>
+                <span class="tag-chip">Daily Dump Backup</span>
+              </div>
+            </div>
+            <div class="layer-stats-col">
+              <div class="val">sifrah (db)</div>
+              <div class="lbl">AWS Central Node</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN DE VISUALIZADORES ARCHIFY EN TIEMPO REAL -->
+        <div style="margin-top: 50px; border-top: 1px solid var(--border-subtle); padding-top: 36px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <span class="badge-iso b-green">Generado con Archify Engine</span>
+              <h3 style="color: #fff; font-size: 22px; margin-top: 6px;">Visualizadores Vectoriales Interactivos (Archify)</h3>
+              <p style="color: var(--text-muted); font-size: 13.5px;">Haz clic entre los diagramas para explorar las rutas en tiempo real con zoom, selector de temas y trazado animado:</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" onclick="changeArchifyFrame('archify_diagrams/sifrah-architecture.html', this)" class="arch-tab-btn active">🏛️ Arquitectura Global</button>
+              <button type="button" onclick="changeArchifyFrame('archify_diagrams/sifrah-cierre-workflow.html', this)" class="arch-tab-btn">⚡ Workflow Cierre Go</button>
+              <button type="button" onclick="changeArchifyFrame('archify_diagrams/sifrah-assistant-sequence.html', this)" class="arch-tab-btn">🩺 Secuencia RAG &amp; LLM</button>
+            </div>
+          </div>
+
+          <div style="background: #040711; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);">
+            <div style="background: #0b1120; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08);">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="dot-ctrl dot-r"></span>
+                <span class="dot-ctrl dot-y"></span>
+                <span class="dot-ctrl dot-g"></span>
+                <span id="archify-active-title" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #94a3b8; margin-left: 10px;">sifrah-architecture.html</span>
+              </div>
+              <a id="archify-open-link" href="archify_diagrams/sifrah-architecture.html" target="_blank" style="color: #10b981; font-size: 12px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 4px;">Abrir a pantalla completa ↗</a>
+            </div>
+            <iframe id="archify-frame" title="Visualizador de Arquitectura Archify" src="archify_diagrams/sifrah-architecture.html" style="width: 100%; height: 680px; border: none; background: #070b12;"></iframe>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =================================================================
+         TAB 2: FRONTENDS (VUE.JS + CAPACITOR)
+         ================================================================= -->
+    <section id="tab-front" class="tab-panel">
+      <div class="grid-cards">
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">📱</span>
+            <span class="badge-iso b-green">app/ (Móvil &amp; Web)</span>
+          </div>
+          <h3>Sifrah App (Oficina Virtual)</h3>
+          <p>La herramienta diaria del distribuidor para operar su negocio independiente.</p>
+          <ul class="features-list">
+            <li><strong>Árbol Dinámico:</strong> Renderizado SVG/Canvas de la red unilevel y binaria con zoom interactivo (<span style="color:#6ee7b7">Tree.vue</span>).</li>
+            <li><strong>Activación con Puntos:</strong> Carrito que calcula en tiempo real los puntos de volumen (PTS) requeridos para calificar (<span style="color:#6ee7b7">Activation.vue</span>).</li>
+            <li><strong>Billetera Virtual:</strong> Consulta de saldo disponible, historial de bonos y solicitud de transferencia bancaria (<span style="color:#6ee7b7">Collect.vue</span>).</li>
+            <li><strong>Generador de Links:</strong> Enlaces directos a WhatsApp con código de afiliado pre-cargado.</li>
+          </ul>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">💼</span>
+            <span class="badge-iso b-blue">admin/ (Backoffice)</span>
+          </div>
+          <h3>Sifrah Admin (Panel Corporativo)</h3>
+          <p>Centro de control para la dirección corporativa, finanzas y almacenes.</p>
+          <ul class="features-list">
+            <li><strong>Validador de Vouchers:</strong> Módulo con visor de comprobantes bancarios, estado pendiente/aprobado/rechazado (<span style="color:#60a5fa">ValidacionVouchers.vue</span>).</li>
+            <li><strong>Kardex de Almacén:</strong> Control de ingresos y egresos de stock por sucursal física (<span style="color:#60a5fa">Kadex.vue</span>).</li>
+            <li><strong>Gestión de Periodos:</strong> Apertura y cierre de quincenas y meses para cálculo de bonos.</li>
+            <li><strong>Audit Logs &amp; Healer:</strong> Registro forense de acciones administrativas con bloqueo de contraseñas maestras.</li>
+          </ul>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">🌿</span>
+            <span class="badge-iso b-purple">components/SifrahAssistant.vue</span>
+          </div>
+          <h3>Widget Conversacional de Salud</h3>
+          <p>Asistente virtual flotante diseñado con microinteracciones y alta conversión.</p>
+          <ul class="features-list">
+            <li><strong>Memoria Multi-Turno:</strong> Empaqueta los últimos turnos de diálogo para no perder el contexto de dolencias.</li>
+            <li><strong>Carrusel de Compra:</strong> Tarjetas con precio, puntos de red (PTS) y botón de compra directa con referido.</li>
+            <li><strong>Conexión Resiliente:</strong> Conmuta automáticamente entre <span style="font-family: monospace;">api.serve-sifrah.xyz</span> y proxies locales.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         TAB 3: BACKEND API HUB
+         ================================================================= -->
+    <section id="tab-back" class="tab-panel">
+      <div class="grid-cards">
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">🔒</span>
+            <span class="badge-iso b-amber">Seguridad &amp; Billetera</span>
+          </div>
+          <h3>Blindaje Contable (<span style="font-family: monospace;">wallet-lock.js</span>)</h3>
+          <p>Mecanismo anti-concurrencia para prevenir el ataque de "doble gasto" cuando dos solicitudes de cobro llegan en el mismo milisegundo.</p>
+          <ul class="features-list">
+            <li><strong>Locking por Usuario:</strong> Bloquea temporalmente el registro en Mongo durante la transacción.</li>
+            <li><strong>Auto-Healer:</strong> Script que audita si la suma de bonos concuerda con el saldo de la billetera.</li>
+            <li><strong>CORS Estricto:</strong> Whitelist estricta para solicitudes originadas desde Vercel o la App nativa.</li>
+          </ul>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">💳</span>
+            <span class="badge-iso b-blue">Pagos &amp; Facturación</span>
+          </div>
+          <h3>Pasarelas Transaccionales</h3>
+          <p>Integración dual con las pasarelas líderes en Perú y Latinoamérica.</p>
+          <ul class="features-list">
+            <li><strong>IziPay Checkout:</strong> Tokenización de tarjetas de crédito/débito y webhooks criptográficos de confirmación.</li>
+            <li><strong>MercadoPago:</strong> Checkout Pro para billeteras digitales (Yape, Plin, PagoEfectivo).</li>
+            <li><strong>BunnyCDN Direct Upload:</strong> Subida directa de comprobantes de pago de alta resolución a almacenamiento CDN.</li>
+          </ul>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">📊</span>
+            <span class="badge-iso b-green">Data Layer</span>
+          </div>
+          <h3>Mongo Wrapper (<span style="font-family: monospace;">db.js</span>)</h3>
+          <p>Capa de acceso a datos con lógica personalizada de catálogos y promociones.</p>
+          <ul class="features-list">
+            <li><strong>ProductWrapper:</strong> Filtra productos de uso interno (como trapeadores o material promocional) para que el catálogo de salud quede impecable.</li>
+            <li><strong>Pool Reutilizable:</strong> Gestión eficiente de conexiones sin saturar la RAM de la instancia de AWS.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         TAB 4: MOTOR DE CIERRE EN GO (GOLANG)
+         ================================================================= -->
+    <section id="tab-go" class="tab-panel">
+      <div class="iso-hero-section">
+        <div class="section-intro">
+          <div>
+            <h2>Motor de Cierre de Periodos en Go (<span style="color: #a78bfa; font-family: monospace;">cierre_engine/</span>)</h2>
+            <p>La joya de rendimiento del proyecto: cómo Sifrah resolvió el cálculo masivo de bonos y rangos para miles de socios en menos de 15 segundos.</p>
+          </div>
+          <span class="badge-iso b-purple">Golang 1.20+ Native Binary</span>
+        </div>
+
+        <div class="grid-cards">
+          <div class="card-3d">
+            <h3>1. Construcción del Árbol de Red</h3>
+            <p>Carga la genealogía completa en memoria RAM utilizando estructuras de grafos y árboles binarios balanceados, eliminando las consultas lentas recursivas a la base de datos.</p>
+          </div>
+          <div class="card-3d">
+            <h3>2. Compresión Dinámica</h3>
+            <p>Aplica la regla multinivel de compresión dinámica: si un distribuidor intermedio no se activó con puntos en el mes, el motor lo salta automáticamente y sube el volumen a la línea ascendente calificada.</p>
+          </div>
+          <div class="card-3d">
+            <h3>3. Dispersión Contable</h3>
+            <p>Calcula Bono de Patrocinio (primer nivel), Bono Residual Unilevel (múltiples niveles), Bono Generacional VIP y Bono de Ahorro, acreditando directamente las billeteras virtuales con precisión al centavo.</p>
+          </div>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-header">
+            <span class="dot-ctrl dot-r"></span>
+            <span class="dot-ctrl dot-y"></span>
+            <span class="dot-ctrl dot-g"></span>
+            <span class="terminal-title">cierre_engine/main.go • Orquestador de Cierre</span>
+          </div>
+          <div class="terminal-code">
+<span class="c-kw">package</span> main
+
+<span class="c-kw">import</span> (
+    <span class="c-str">"fmt"</span>
+    <span class="c-str">"sync"</span>
+    <span class="c-str">"sifrah/cierre/engine"</span>
+    <span class="c-str">"sifrah/cierre/db"</span>
+)
+
+<span class="c-kw">func</span> <span class="c-fn">ProcesarCierreMasivo</span>(periodoID <span class="c-kw">string</span>) {
+    mongoClient := db.<span class="c-fn">GetConnection</span>()
+    arbolGenealogico := engine.<span class="c-fn">CargarRedEnMemoria</span>(mongoClient, periodoID)
+
+    <span class="c-kw">var</span> wg sync.WaitGroup
+    wg.<span class="c-fn">Add</span>(<span class="c-num">3</span>)
+
+    <span class="c-cm">// Procesamiento concurrente masivo con Goroutines</span>
+    <span class="c-kw">go</span> <span class="c-kw">func</span>() { <span class="c-kw">defer</span> wg.<span class="c-fn">Done</span>(); engine.<span class="c-fn">CalcularRangosLiderazgo</span>(arbolGenealogico) }()
+    <span class="c-kw">go</span> <span class="c-kw">func</span>() { <span class="c-kw">defer</span> wg.<span class="c-fn">Done</span>(); engine.<span class="c-fn">CalcularBonoResidualUnilevel</span>(arbolGenealogico) }()
+    <span class="c-kw">go</span> <span class="c-kw">func</span>() { <span class="c-kw">defer</span> wg.<span class="c-fn">Done</span>(); engine.<span class="c-fn">CalcularBonoGeneracionalVIP</span>(arbolGenealogico) }()
+
+    wg.<span class="c-fn">Wait</span>()
+    engine.<span class="c-fn">DispersarSaldosBilletera</span>(mongoClient, periodoID)
+    fmt.<span class="c-fn">Println</span>(<span class="c-str">"✅ Cierre completado exitosamente en 12.4s"</span>)
+}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         TAB 5: IA & ASISTENTE RAG
+         ================================================================= -->
+    <section id="tab-ai-rag" class="tab-panel">
+      <div class="grid-cards">
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">🩺</span>
+            <span class="badge-iso b-green">Guardrails Médicos</span>
+          </div>
+          <h3>Triage Clínico Anti-Riesgo</h3>
+          <p>Protección legal de la empresa contra diagnósticos irresponsables.</p>
+          <ul class="features-list">
+            <li><strong>Filtro de Emergencia:</strong> Intercepta alertas graves (infarto, tumor, hemorragia, asfixia) y bloquea la venta de suplementos.</li>
+            <li><strong>Mensaje de Derivación:</strong> Instiga amablemente al usuario a buscar atención médica inmediata en un hospital.</li>
+            <li><strong>Descargo Legal:</strong> Aclara siempre que los suplementos son coadyuvantes y no reemplazan tratamientos médicos prescritos.</li>
+          </ul>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">🌿</span>
+            <span class="badge-iso b-blue">Catálogo Semántico &amp; Combos</span>
+          </div>
+          <h3>RAG &amp; Cross-Selling Automático</h3>
+          <p>Mapeo ponderado de dolencias y paquetes de productos para maximizar puntos MLM.</p>
+          <ul class="features-list">
+            <li><strong>Ponderación Inteligente:</strong> Dolencias (peso 5), tags (peso 3) y beneficios (peso 2).</li>
+            <li><strong>Combos Sinergia:</strong> Recomienda paquetes clave como <em>Rejuvenece + Detox</em> (Articulaciones) o <em>Regenera T + Detox</em> (Gastritis).</li>
+            <li><strong>Mayor Facturación:</strong> Eleva los puntos de red de 40 a 80 pts por recomendación.</li>
+          </ul>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">⚡</span>
+            <span class="badge-iso b-purple">Gemini Multimodelo</span>
+          </div>
+          <h3>Cascada Resiliente de IA</h3>
+          <p>Arquitectura tolerante a fallos para garantizar respuestas sub-segundo.</p>
+          <ul class="features-list">
+            <li><strong>Primario (<span style="color:#6ee7b7">gemini-3.5-flash-lite</span>):</strong> Latencia ultra rápida de 1.3s y cero saturación.</li>
+            <li><strong>Secundario (<span style="color:#c084fc">gemini-3.8-flash</span>):</strong> Modelo de alta capacidad lingüística.</li>
+            <li><strong>Fallback Heurístico:</strong> Generador local si los servicios externos de Google sufren caídas.</li>
+            <li><strong>Mongo Analytics:</strong> Registro asíncrono de cada charla en <span style="font-family: monospace;">assistant_conversations</span>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         TAB 6: AI DEVELOPER PLAYBOOK & SCAFFOLDING
+         ================================================================= -->
+    <section id="tab-ai-dev" class="tab-panel">
+      <!-- HERO DEL PLAYBOOK CON 1-CLICK COPY -->
+      <div class="ai-hero-box">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <span class="badge-iso b-green">AI-Ready Framework</span>
+            <h2 style="color: #fff; font-size: 24px; margin-top: 8px;">Playbook de Desarrollo con IA para Ingenieros</h2>
+            <p style="color: var(--text-muted); font-size: 14px; max-width: 720px; margin-top: 6px;">
+              Diseñado para programar características a velocidad 10x con <strong>Cursor, Claude Code, GitHub Copilot y Antigravity</strong> sin riesgo de alucinaciones en modelos de datos ni violaciones contables.
+            </p>
+          </div>
+          <button type="button" class="copy-btn" onclick="copyMasterPrompt(this)">
+            📋 Copiar Contexto Maestro para tu IA
+          </button>
+        </div>
+
+        <div class="prompt-box" id="master-system-prompt">Eres un Senior Fullstack Engineer &amp; Software Architect trabajando en el repositorio empresarial de Sifrah.
+Arquitectura clave:
+- Frontend Móvil: Vue.js + Capacitor 5 en `app/` (Árbol MLM en `Tree.vue`, Activación en `Activation.vue`).
+- Frontend Backoffice: Vue.js en `admin/` (Validación de vouchers en `ValidacionVouchers.vue`).
+- Backend Hub: Node.js / Next.js en `server/` (Monolito en PM2, conexión a MongoDB vía `server/components/db.js`).
+- Motor de Cierre MLM: Golang 1.20 en `cierre_engine/` (Goroutines concurrentes, compresión dinámica en RAM).
+- Asistente de Salud: RAG semántico + Gemini 3.5/3.8 Flash en `server/components/ai-catalog.js`.
+- Base de datos: MongoDB 6.x en AWS EC2 Ohio (`sifrah`).
+
+Reglas críticas inquebrantables:
+1. NUNCA alteres el saldo de un usuario sin pasar por el mutex en `server/components/wallet-lock.js`.
+2. NUNCA omitas el triage clínico de `evaluateMedicalGuardrails` al modificar el chatbot de bienestar.
+3. Respeta siempre la compresión dinámica del plan de compensación multinivel.
+4. Preserva los comentarios y tipos existentes en el código.</div>
+      </div>
+
+      <!-- TABLA RÁPIDA: "¿DÓNDE ESTÁ CADA COSA?" -->
+      <div class="card-3d" style="margin-bottom: 30px;">
+        <h3 style="display: flex; align-items: center; gap: 8px;">🗺️ Navegador Rápido de Código ("Quick Locator")</h3>
+        <p style="font-size: 13.5px; color: var(--text-muted);">Usa esta referencia para indicar a tu IA exactamente qué archivos abrir y modificar:</p>
+        
+        <div style="overflow-x: auto;">
+          <table class="quick-table">
+            <thead>
+              <tr>
+                <th>Si deseas programar o modificar...</th>
+                <th>Archivo / Directorio Principal</th>
+                <th>Modelo / Colección</th>
+                <th>Comando de Prueba Local</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Árbol de Red / Genealogía</strong></td>
+                <td><code style="color:#6ee7b7">app/src/views/Tree.vue</code></td>
+                <td><code>users</code> (sponsor_id, binary)</td>
+                <td><code>npm run serve</code> (en app/)</td>
+              </tr>
+              <tr>
+                <td><strong>Cierre de Periodos &amp; Bonos</strong></td>
+                <td><code style="color:#a78bfa">cierre_engine/main.go</code></td>
+                <td><code>transactions</code>, <code>ledger</code></td>
+                <td><code>go test ./...</code> (en cierre_engine/)</td>
+              </tr>
+              <tr>
+                <td><strong>Validación de Vouchers de Pago</strong></td>
+                <td><code style="color:#60a5fa">admin/src/views/ValidacionVouchers.vue</code></td>
+                <td><code>orders</code> (voucher_status)</td>
+                <td><code>npm run serve</code> (en admin/)</td>
+              </tr>
+              <tr>
+                <td><strong>Asistente Médico &amp; Combos RAG</strong></td>
+                <td><code style="color:#34d399">server/components/ai-catalog.js</code></td>
+                <td><code>products</code>, <code>assistant_conv.</code></td>
+                <td><code>node scripts/test-rag.js</code></td>
+              </tr>
+              <tr>
+                <td><strong>Billetera &amp; Retiros de Dinero</strong></td>
+                <td><code style="color:#f59e0b">server/components/wallet-lock.js</code></td>
+                <td><code>users.wallet_balance</code></td>
+                <td>Tests de concurrencia Node</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4 RECETAS DE PROMPTS LISTAS PARA COPIAR -->
+      <h3 style="color: #fff; font-size: 20px; margin-bottom: 16px;">⚡ Recetas de Prompts Listas para Usar (AI Scaffolding)</h3>
+      <div class="grid-cards">
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 24px;">🔌</span>
+            <span class="badge-iso b-green">Backend Node</span>
+          </div>
+          <h3>Crear Endpoint Seguro</h3>
+          <p>Scaffolding con autenticación JWT, pool de Mongo y auditoría.</p>
+          <div class="prompt-box" id="p-endpoint">Necesito crear un nuevo endpoint en el backend de Sifrah:
+- Ruta: POST /api/app/[nombre_del_endpoint]
+- Ubicación: dentro de `server/pages/api/app/[nombre].js`
+Requisitos:
+1. Validar el token JWT de sesión del socio desde los headers de autorización.
+2. Usar la conexión existente de `server/components/db.js` reutilizando el pool de Mongo.
+3. Si involucra saldo, envuélvela con `withWalletLock` de `server/components/wallet-lock.js`.
+4. Manejar errores devolviendo JSON `{ success: false, error: "mensaje" }`.</div>
+          <button type="button" class="copy-btn" style="margin-top: 12px; width: 100%; justify-content: center;" onclick="copyBoxText('p-endpoint', this)">Copiar Prompt</button>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 24px;">🌿</span>
+            <span class="badge-iso b-blue">RAG &amp; Salud</span>
+          </div>
+          <h3>Extender Catálogo de IA</h3>
+          <p>Registrar un nuevo combo sin romper el triage clínico ni la atribución.</p>
+          <div class="prompt-box" id="p-combo">Quiero registrar un nuevo combo de suplementos en el Asistente de Sifrah:
+- Archivo objetivo: `server/components/ai-catalog.js`
+- Combo: [Nombre del Combo, ej. COMBO_RESPIRATORIO_PRO]
+- Productos: [Producto A + Producto B] (80 PTS)
+Requisitos:
+1. Registrar tags en la matriz ponderada (dolencia: 5, tag: 3, beneficio: 2).
+2. Asegurar que síntomas graves sigan siendo interceptados por `evaluateMedicalGuardrails`.
+3. Propagar el `refCode` del distribuidor hasta el checkout final.</div>
+          <button type="button" class="copy-btn" style="margin-top: 12px; width: 100%; justify-content: center;" onclick="copyBoxText('p-combo', this)">Copiar Prompt</button>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 24px;">⚡</span>
+            <span class="badge-iso b-purple">Golang Engine</span>
+          </div>
+          <h3>Nuevo Bono en Go</h3>
+          <p>Cálculo concurrente en RAM con Goroutines y compresión dinámica.</p>
+          <div class="prompt-box" id="p-go">Quiero implementar un nuevo cálculo de bono en el motor de cierre de Sifrah:
+- Directorio objetivo: `cierre_engine/`
+- Nombre del bono: [ej. Bono Liderazgo Zafiro]
+Requisitos:
+1. Implementar la función como una Goroutine concurrente con `sync.WaitGroup` en `main.go`.
+2. Leer los volúmenes del árbol en RAM sin hacer queries a la DB dentro del loop.
+3. Respetar compresión dinámica: saltar patrocinadores no calificados.
+4. Incluir test unitario en Go (`_test.go`) con árbol mock.</div>
+          <button type="button" class="copy-btn" style="margin-top: 12px; width: 100%; justify-content: center;" onclick="copyBoxText('p-go', this)">Copiar Prompt</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         TAB 7: INFRAESTRUCTURA & CLOUD
+         ================================================================= -->
+    <section id="tab-devops" class="tab-panel">
+      <div class="grid-cards">
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">🌊</span>
+            <span class="badge-iso b-blue">DigitalOcean Droplet</span>
+          </div>
+          <h3>Servidor de Producción Backend</h3>
+          <p>Instancia Linux dedicada que hospeda el API Hub, el motor en Go y los procesos PM2.</p>
+          <ul class="features-list">
+            <li><strong>IP Pública:</strong> <span style="font-family: monospace; color:#60a5fa">68.183.125.105</span></li>
+            <li><strong>SSH Key Local:</strong> <span style="font-family: monospace;">sifrah_dev_key.pem</span></li>
+            <li><strong>Directorio:</strong> <span style="font-family: monospace;">/var/www/sifrah-server</span></li>
+            <li><strong>Despliegue Automatizado:</strong> Script one-liner documentado en <span style="color:#60a5fa">DEPLOYMENT.md</span> que hace pull, build de Go y reinicio de PM2 en un comando.</li>
+          </ul>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">☁️</span>
+            <span class="badge-iso b-amber">Amazon AWS EC2</span>
+          </div>
+          <h3>Cluster de Base de Datos Central</h3>
+          <p>Servidor MongoDB dedicado en Ohio configurado con autenticación segura y réplicas.</p>
+          <ul class="features-list">
+            <li><strong>Host:</strong> <span style="font-family: monospace; font-size: 11px;">ec2-18-220-240-71.us-east-2.compute.amazonaws.com</span></li>
+            <li><strong>Puerto:</strong> <span style="font-family: monospace;">27017</span> (Conexión directa autenticada)</li>
+            <li><strong>Backups:</strong> Script automatizado de mongodump con subida encriptada hacia Bunny.net Storage.</li>
+          </ul>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-top">
+            <span style="font-size: 26px;">▲</span>
+            <span class="badge-iso b-green">Distribución Global</span>
+          </div>
+          <h3>Vercel &amp; Google Play Store</h3>
+          <p>Canales de distribución continua para socios y administradores.</p>
+          <ul class="features-list">
+            <li><strong>Vercel Admin:</strong> <span style="font-family: monospace;">sifrah.vercel.app</span> (CI/CD continuo al empujar a <span style="color:#34d399">master</span>).</li>
+            <li><strong>Play Store Nativo:</strong> Generación de Android App Bundle (<span style="font-family: monospace;">.aab</span>) firmado con Gradle listo para publicación oficial.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 Sifrah Multinivel &amp; HealthTech • Documentación Maestra del Ecosistema Integral de Software</p>
+  </footer>
+
+  <script>
+    function showTab(panelId, btn) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById(panelId);
+      if (target) target.classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+
+    function changeArchifyFrame(url, btn) {
+      const frame = document.getElementById('archify-frame');
+      const openLink = document.getElementById('archify-open-link');
+      const titleSpan = document.getElementById('archify-active-title');
+
+      if (frame) frame.src = url;
+      if (openLink) openLink.href = url;
+      if (titleSpan) titleSpan.textContent = url.split('/').pop();
+
+      document.querySelectorAll('.arch-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    }
+
+    function copyMasterPrompt(btn) {
+      const text = document.getElementById('master-system-prompt').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const original = btn.innerHTML;
+        btn.innerHTML = '✅ ¡Copiado al Portapapeles!';
+        setTimeout(() => { btn.innerHTML = original; }, 2000);
+      });
+    }
+
+    function copyBoxText(elementId, btn) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const original = btn.innerHTML;
+        btn.innerHTML = '✅ ¡Copiado!';
+        setTimeout(() => { btn.innerHTML = original; }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

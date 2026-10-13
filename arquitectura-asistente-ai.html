@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arquitectura del Asistente Virtual Sifrah AI (RAG + MLM)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0f18;
+      --bg-card: #111927;
+      --bg-card-hover: #162235;
+      --border: rgba(255, 255, 255, 0.08);
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.25);
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.6;
+      padding: 40px 20px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 0%, #a7f3d0 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* FLOW DIAGRAM SECTION */
+    .flow-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      margin-bottom: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .flow-wrapper::before {
+      content: "";
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      background: var(--primary-glow);
+      filter: blur(120px);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      position: relative;
+    }
+
+    .step-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .step-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+      box-shadow: 0 10px 25px var(--primary-glow);
+      background: var(--bg-card-hover);
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    .step-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .step-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .step-tag {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #34d399;
+    }
+
+    /* 4 LAYERS ARCHITECTURE */
+    .layers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .layer-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .layer-card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .layer-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .layer-icon {
+      font-size: 28px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+    }
+
+    .layer-card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .layer-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .layer-list li {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .layer-list li strong {
+      color: var(--text-main);
+    }
+
+    .layer-list li::before {
+      content: "▹";
+      color: var(--primary);
+      font-size: 14px;
+    }
+
+    /* REAL CONVERSATION TRACE */
+    .trace-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      margin-bottom: 60px;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 24px;
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 7px;
+      width: 2px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -20px;
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid var(--bg-card);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .timeline-dot.danger {
+      background: var(--danger);
+      box-shadow: 0 0 10px var(--danger);
+    }
+
+    .timeline-dot.blue {
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .timeline-content {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+
+    .timeline-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .timeline-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .code-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #a7f3d0;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    @media (max-width: 768px) {
+      .layers-grid {
+        grid-template-columns: 1fr;
+      }
+      h1 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">Sifrah HealthTech & AI</div>
+      <h1>Arquitectura del Asistente Virtual</h1>
+      <p class="subtitle">Documentación técnica de la integración conversacional con RAG, Guardrails Clínicos, Gemini 3.8 Flash y Atribución de Ventas Multinivel.</p>
+    </header>
+
+    <!-- CICLO DE VIDA DE UN MENSAJE -->
+    <div class="flow-wrapper">
+      <div class="section-title">
+        <span>🔄</span> ¿Qué pasa cuando un usuario chatea con el bot?
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3>Captura en Frontend</h3>
+          <p>El usuario escribe su molestia en la App/Web. El widget empaqueta la consulta, su historial reciente y su <strong>código de distribuidor</strong>.</p>
+          <span class="step-tag">SifrahAssistant.vue</span>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3>Triage de Emergencias</h3>
+          <p>El backend intercepta síntomas críticos (dolor de pecho, desmayos, hemorragias). Si detecta peligro, frena y deriva a urgencias médicas.</p>
+          <span class="step-tag">Medical Guardrails</span>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3>Recuperación RAG</h3>
+          <p>El motor RAG compara los síntomas contra las fichas técnicas semánticas y selecciona los 1-2 suplementos ideales del catálogo.</p>
+          <span class="step-tag">ai-catalog.js (RAG)</span>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h3>Generación Gemini</h3>
+          <p>Gemini 3.8 Flash recibe el contexto curado, redacta una respuesta empática, explica cómo consumirlo y sugiere hábitos saludables.</p>
+          <span class="step-tag">Gemini 3.8 Flash</span>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <h3>Inyección de Referido</h3>
+          <p>El bot genera tarjetas interactivas de compra con precio, puntos de red (PTS) y el enlace directo con el código del distribuidor patrocinador.</p>
+          <span class="step-tag">MLM Link Attribution</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LAS 4 CAPAS DEL SISTEMA -->
+    <div class="layers-grid">
+      <!-- Capa 1 -->
+      <div class="layer-card">
+        <div class="layer-header">
+          <span class="layer-icon">📱</span>
+          <div>
+            <h2>1. Capa de Interfaz y Cliente</h2>
+            <span style="font-size: 12px; color: var(--primary);">Vue.js + Capacitor (Android / iOS / Web)</span>
+          </div>
+        </div>
+        <ul class="layer-list">
+          <li><strong>Widget Flotante Universal:</strong> Integrado de forma global en <span class="code-pill">App.vue</span> para estar disponible en toda la plataforma.</li>
+          <li><strong>Memoria de Conversación:</strong> Envía los últimos 6 turnos de chat para recordar contexto de preguntas sucesivas.</li>
+          <li><strong>Tolerancia a Fallos de Red:</strong> Fallback dinámico automático entre <span class="code-pill">api.serve-sifrah.xyz</span> y rutas locales.</li>
+          <li><strong>Tarjetas de Conversión:</strong> Renderizado de productos con 1-clic directo a la pasarela de compra.</li>
+        </ul>
+      </div>
+
+      <!-- Capa 2 -->
+      <div class="layer-card">
+        <div class="layer-header">
+          <span class="layer-icon">🛡️</span>
+          <div>
+            <h2>2. Capa de Seguridad y Guardrails</h2>
+            <span style="font-size: 12px; color: var(--danger);">Triage Médico y Protección Legal</span>
+          </div>
+        </div>
+        <ul class="layer-list">
+          <li><strong>Filtro Anti-Negligencia:</strong> Intercepta alertas rojas como infarto, cáncer, convulsiones o sobredosis.</li>
+          <li><strong>Disclaimer Automático:</strong> Recuerda permanentemente que los suplementos no reemplazan prescripción médica.</li>
+          <li><strong>Anti-Alucinaciones:</strong> El LLM tiene directiva estricta de abstenerse de inventar productos fuera del catálogo.</li>
+          <li><strong>Protección de Dosis:</strong> Informa precauciones para hipertensos, embarazadas o personas con alergias.</li>
+        </ul>
+      </div>
+
+      <!-- Capa 3 -->
+      <div class="layer-card">
+        <div class="layer-header">
+          <span class="layer-icon">🧠</span>
+          <div>
+            <h2>3. Capa de Conocimiento RAG y LLM</h2>
+            <span style="font-size: 12px; color: var(--accent);">Motor de IA en DigitalOcean</span>
+          </div>
+        </div>
+        <ul class="layer-list">
+          <li><strong>Catálogo Semántico (<span class="code-pill">ai-catalog.js</span>):</strong> Mapeo detallado de 26 productos Sifrah clasificados por dolencias, ingredientes y beneficios.</li>
+          <li><strong>Algoritmo de Relevancia Ponderada:</strong> Puntúa dolencias (peso 5), tags (peso 3) y beneficios (peso 2).</li>
+          <li><strong>Motor Generativo:</strong> Google Gemini 3.8 Flash con latencia sub-segundo y ventana de contexto completa.</li>
+          <li><strong>Modo Offline / Resiliencia:</strong> Generador heurístico en caso de interrupción en la API de Google.</li>
+        </ul>
+      </div>
+
+      <!-- Capa 4 -->
+      <div class="layer-card">
+        <div class="layer-header">
+          <span class="layer-icon">💎</span>
+          <div>
+            <h2>4. Capa de Integración Multinivel (MLM)</h2>
+            <span style="font-size: 12px; color: var(--warning);">Comisiones, Red y Conversión</span>
+          </div>
+        </div>
+        <ul class="layer-list">
+          <li><strong>Tracking de Patrocinio:</strong> Extrae el <span class="code-pill">code</span> del distribuidor logueado en la sesión activa.</li>
+          <li><strong>Cálculo de Puntos de Volumen:</strong> Muestra en tiempo real los puntos de red (<span class="code-pill">points</span>) que otorga la compra.</li>
+          <li><strong>Deep Link de Checkout:</strong> Genera URLs parametrizadas tipo <span class="code-pill">/app/checkout?ref=CODIGO</span> para comisiones seguras.</li>
+          <li><strong>Cierre de Venta Instantáneo:</strong> Reduce la fricción de búsqueda manual en el catálogo comercial.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CASOS DE USO Y TRAZA DE EJECUCIÓN -->
+    <div class="trace-section">
+      <div class="section-title">
+        <span>⚡</span> Trazabilidad de Consultas Reales
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-title">Consulta: "Me duelen las rodillas cuando bajo escaleras"</div>
+            <div class="timeline-desc">
+              RAG detecta dolencia articular → Recupera <strong>REJUVENECE-POTE</strong> (Colágeno + Ácido Hialurónico) → Gemini redacta posología y recomienda hábitos de descanso e hidratación → Se genera botón de compra con S/ 85 y 40 pts.
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-title">Consulta: "Tengo ardor en la boca del estómago y acidez"</div>
+            <div class="timeline-desc">
+              RAG detecta salud digestiva → Recupera <strong>REGENERA T</strong> (Sangre de grado, tocosh, sábila) → Explica toma en agua tibia antes del desayuno → Inyecta enlace directo de producto.
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot danger"></div>
+          <div class="timeline-content">
+            <div class="timeline-title">Consulta con Alarma: "Siento opresión en el pecho y me falta el aire"</div>
+            <div class="timeline-desc">
+              El Guardrail frena en seco el RAG y el LLM → Devuelve alerta roja de emergencia hospitalaria inmediata sin ofrecer ningún producto.
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot blue"></div>
+          <div class="timeline-content">
+            <div class="timeline-title">Pregunta Genérica o Casual: "y cosas así que me ayuden que pueda tener en casa"</div>
+            <div class="timeline-desc">
+              El asistente evalúa la continuidad con el historial previo y orienta con hábitos integrales (nutrición, agua, descanso) manteniendo el tono empático.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Sifrah Multi-Level Marketing Platform • Documentación de Arquitectura de Inteligencia Artificial • Actualizado Octubre 2026</p>
+    </footer>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Ecosistema Global Sifrah (MLM Enterprise & AI)",
+    "output": "docs/archify_diagrams/sifrah-architecture.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    { "id": "mobile-app", "type": "external", "label": "App Distribuidores", "sublabel": "Capacitor 5 / Android & iOS", "pos": [40, 260], "size": [150, 64], "tag": "com.sifrah.app" },
+    { "id": "admin-web", "type": "external", "label": "Backoffice Admin", "sublabel": "Vue.js Web Panel", "pos": [40, 420], "size": [150, 64], "tag": "sifrah.vercel.app" },
+    { "id": "client-web", "type": "external", "label": "Tienda / Clientes", "sublabel": "Web Store Checkout", "pos": [40, 100], "size": [150, 64], "tag": "E-commerce" },
+
+    { "id": "nginx-gateway", "type": "cloud", "label": "Nginx Reverse Proxy", "sublabel": "HTTPS :443 SSL", "pos": [280, 260], "size": [150, 64], "tag": "Let's Encrypt" },
+
+    { "id": "api-hub", "type": "backend", "label": "Sifrah Server API", "sublabel": "Next.js / Node.js PM2", "pos": [510, 260], "size": [160, 68], "tag": "api.serve-sifrah.xyz" },
+    { "id": "rag-assistant", "type": "backend", "label": "Asistente Bienestar", "sublabel": "RAG Semántico + Guardrails", "pos": [510, 100], "size": [160, 64], "tag": "Triage Clínico" },
+    { "id": "cierre-engine", "type": "backend", "label": "Cierre Engine (Go)", "sublabel": "Golang 1.20 Concurrente", "pos": [510, 420], "size": [160, 68], "tag": "< 15s Masivo" },
+
+    { "id": "gemini-api", "type": "cloud", "label": "Google Gemini AI", "sublabel": "Gemini 3.5 / 3.8 Flash", "pos": [750, 100], "size": [160, 64], "tag": "1.3s Latency" },
+
+    { "id": "aws-mongo", "type": "database", "label": "AWS EC2 MongoDB", "sublabel": "Database sifrah :27017", "pos": [750, 260], "size": [160, 68], "tag": "AWS us-east-2" },
+    { "id": "ai-prediccion", "type": "backend", "label": "AI Liderazgo & Churn", "sublabel": "Python Flask (5000/5002)", "pos": [750, 420], "size": [160, 64], "tag": "Scikit-Learn" },
+
+    { "id": "bunny-cdn", "type": "cloud", "label": "BunnyCDN Storage", "sublabel": "Vouchers & Media", "pos": [980, 180], "size": [150, 64], "tag": "Edge Storage" },
+    { "id": "payments-gateway", "type": "cloud", "label": "Pasarelas de Pago", "sublabel": "IziPay & MercadoPago", "pos": [980, 340], "size": [150, 64], "tag": "Tarjetas / Yape" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Nube DigitalOcean (Droplet 68.183.125.105)", "wraps": ["nginx-gateway", "api-hub", "rag-assistant", "cierre-engine"] },
+    { "kind": "region", "label": "Amazon Web Services (AWS us-east-2)", "wraps": ["aws-mongo"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "client-web", "to": "nginx-gateway", "label": "HTTPS", "fromSide": "right", "toSide": "left" },
+    { "id": "c2", "from": "mobile-app", "to": "nginx-gateway", "label": "HTTPS REST", "variant": "emphasis", "fromSide": "right", "toSide": "left" },
+    { "id": "c3", "from": "admin-web", "to": "nginx-gateway", "label": "HTTPS REST", "fromSide": "right", "toSide": "left" },
+
+    { "id": "c4", "from": "nginx-gateway", "to": "api-hub", "label": "proxy :3000", "variant": "emphasis", "fromSide": "right", "toSide": "left" },
+
+    { "id": "c5", "from": "api-hub", "to": "rag-assistant", "label": "invoca RAG", "fromSide": "top", "toSide": "bottom" },
+    { "id": "c6", "from": "api-hub", "to": "cierre-engine", "label": "ejecuta cierre", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+
+    { "id": "c7", "from": "rag-assistant", "to": "gemini-api", "label": "Prompt + Chunks", "variant": "emphasis", "fromSide": "right", "toSide": "left" },
+    { "id": "c8", "from": "api-hub", "to": "aws-mongo", "label": "Pool TCP :27017", "variant": "emphasis", "fromSide": "right", "toSide": "left" },
+    { "id": "c9", "from": "cierre-engine", "to": "aws-mongo", "label": "Lectura/Escritura", "fromSide": "right", "toSide": "bottom" },
+    { "id": "c10", "from": "api-hub", "to": "ai-prediccion", "label": "REST :5000", "fromSide": "bottom", "toSide": "left" },
+
+    { "id": "c11", "from": "api-hub", "to": "bunny-cdn", "label": "upload voucher", "variant": "dashed", "fromSide": "right", "toSide": "left" },
+    { "id": "c12", "from": "api-hub", "to": "payments-gateway", "label": "tokeniza compra", "variant": "security", "fromSide": "right", "toSide": "left" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Frontends & Canales",
+      "items": [
+        "Sifrah App: Capacitor Android & iOS para socios de red",
+        "Sifrah Admin: Vercel Backoffice para tesorería y validación de vouchers",
+        "Tienda Pública con atribución de comisiones por referido"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Núcleo DigitalOcean",
+      "items": [
+        "API Hub monolítico en Node.js con más de 120 endpoints",
+        "Cierre Engine en Go para liquidar rangos y bonos en < 15 segundos",
+        "Asistente RAG con guardrails de triage médico"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Nube & Persistencia",
+      "items": [
+        "Instancia AWS EC2 en Ohio alojando MongoDB y colecciones seguras",
+        "Google Gemini 3.5 / 3.8 Flash para respuestas clínicas cálidas y precisas",
+        "Bunny.net Storage CDN para vouchers y documentos con entrega global"
+      ]
+    }
+  ]
+}

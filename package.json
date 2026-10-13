@@ -1,0 +1,21 @@
+{
+  "name": "sifrah-docs",
+  "version": "1.0.0",
+  "description": "Documentación Maestra, Arquitectura 3D y AI Developer Playbook del Ecosistema Sifrah",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve . -p 8080",
+    "dev": "npx serve . -p 8080",
+    "open": "open index.html"
+  },
+  "keywords": [
+    "sifrah",
+    "mlm",
+    "architecture",
+    "archify",
+    "ai-agent",
+    "rag"
+  ],
+  "author": "Sifrah Engineering Team",
+  "license": "UNLICENSED"
+}
