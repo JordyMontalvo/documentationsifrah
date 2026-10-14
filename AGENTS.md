@@ -45,6 +45,12 @@ Cualquier IA que genere código DEBE respetar estrictamente estas directrices:
 * **PROHIBIDO** ejecutar `db.dropDatabase()`, `db.collection.drop()`, `deleteMany({})` o alterar índices sin WHERE específico.
 * Para desarrollo local, utiliza una réplica local o variables `.env` de pruebas.
 
+### 5. Tienda Externa Compartida y Puntos de Socios
+* Cuando un cliente externo realiza una compra en `/tienda/[userId]`, el pedido se registra en `activations` con `channel: "shared_store"` y `userId: owner.id` (el socio que compartió su link).
+* **Precios y Puntos:** En la tienda externa se cobra siempre el `public_price` y los puntos (PTS) se ocultan visualmente al cliente externo.
+* **Acreditación de Puntos:** Al aprobar la compra en Admin (`/tienda`), los puntos de los productos se suman a `user.points` del socio vendedor, se evalúa si califica a activo (`points >= 120`) y se actualiza la cascada `lib.updateTotalPointsCascade`.
+* **Stock sin sucursal física:** Las órdenes de tienda compartida tienen `office: null`. Todo handler de aprobación/anulación debe verificar la existencia de `office` antes de descontar inventario local para evitar excepciones de puntero nulo.
+
 ---
 
 ## 📂 3. Mapa de Rutas de Archivos ("¿Dónde está qué?")
@@ -53,11 +59,14 @@ Cualquier IA que genere código DEBE respetar estrictamente estas directrices:
 | :--- | :--- |
 | **Visualizador de Árbol Genealógico** | `app/src/views/Tree.vue` |
 | **Proceso de Activación / Carrito de Puntos** | `app/src/views/Activation.vue` |
+| **Tienda Externa Compartida (Pública)** | `app/src/views/public/SharedStore.vue` y `StoreCheckout.vue` |
 | **Retiros y Cobro de Comisiones** | `app/src/views/Collect.vue` y `server/components/wallet-lock.js` |
 | **Widget Flotante del Asistente** | `app/src/components/SifrahAssistant.vue` |
 | **Ruta API del Chatbot Asistente** | `server/pages/api/app/assistant.js` |
 | **Catálogo RAG, Dolencias y Combos** | `server/components/ai-catalog.js` |
 | **Validación Administrativa de Vouchers** | `admin/src/views/ValidacionVouchers.vue` |
+| **Compras de Tienda Compartida (Admin)** | `admin/src/views/StoreOrders.vue` y `server/pages/api/admin/store-orders.js` |
+| **Checkout de Tienda y Aprobaciones** | `server/pages/api/public/store-checkout.js` y `server/pages/api/admin/activations.js` |
 | **Kardex y Stock de Sucursales** | `admin/src/views/Kadex.vue` |
 | **Cálculo de Bonos y Rangos en Go** | `cierre_engine/main.go` y `cierre_engine/engine/` |
 | **Conexión a MongoDB** | `server/components/db.js` |

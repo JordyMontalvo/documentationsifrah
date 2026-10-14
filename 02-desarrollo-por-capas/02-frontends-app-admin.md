@@ -23,6 +23,9 @@ La aplicación móvil y web utilizada diariamente por los distribuidores de la r
 4. **`components/SifrahAssistant.vue` (Widget de Salud Flotante):**
    - Burbuja flotante con microinteracciones de pulso y saludo animado.
    - Envía el código de referido del distribuidor (`refCode`) en cada consulta para atribuir ventas automáticas de suplementos.
+5. **`public/SharedStore.vue` y `StoreCheckout.vue` (Tienda Externa Compartida):**
+   - Catálogo público accesible por `/tienda/:userId` donde clientes externos compran a Precio Público.
+   - Puntos (PTS) ocultos para el público externo; formulario de entrega y pago con voucher o tarjeta.
 
 ---
 
@@ -38,3 +41,7 @@ Panel de control para la dirección corporativa, finanzas y operaciones logísti
    - Control de entradas, salidas y transferencias de productos por sucursal física.
 3. **Gestión de Periodos de Cierre:**
    - Interfaz corporativa para disparar el cálculo masivo de bonos quincenales y mensuales mediante llamada al motor de Go.
+4. **`StoreOrders.vue` (Gestor de Compras de Tienda Compartida - Tab "Tienda"):**
+   - Tab dedicado dentro de Afiliaciones (`/tienda`).
+   - Muestra las órdenes de clientes externos, comprador, socio dueño del link, productos, importe y la columna **Puntos** acumulados para el socio.
+   - Al aprobar la orden, acredita automáticamente los puntos al socio vendedor en su red.

@@ -58,3 +58,18 @@ async function procesarRetiro(userId, monto) {
 
 - Mantiene un pool persistente de conexiones hacia el servidor MongoDB en AWS EC2 Ohio (`27017`).
 - Incluye el `ProductWrapper` que filtra productos de uso interno (material promocional, limpieza) para presentar un catálogo limpio tanto al e-commerce como al asistente RAG.
+
+---
+
+## 🛒 4. Tienda Externa y Gestión de Puntos (`server/pages/api/`)
+
+1. **`POST /api/public/store-checkout`:**
+   - Procesa la compra del cliente externo en el enlace del socio (`/tienda/[userId]`).
+   - Calcula el total acumulado de puntos de los productos (`item.points * item.total`).
+   - Crea un registro en `activations` con `channel: "shared_store"` asignado a `userId: owner.id`.
+2. **`GET /api/admin/store-orders`:**
+   - Lista todas las compras con `channel: "shared_store"`.
+   - Incluye `points` por pedido y totales en el `summary` para la vista corporativa.
+3. **`POST /api/admin/activations` (Acción `approve` / `cancel`):**
+   - Al aprobar: suma `activation.points` a `user.points` del socio vendedor, evalúa si califica a activo (`points >= 120`), ejecuta `lib.updateTotalPointsCascade` y maneja con seguridad pedidos sin almacén físico (`office: null`).
+   - Al anular: revierte los puntos exactos del socio y actualiza la cascada del árbol.

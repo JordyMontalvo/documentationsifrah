@@ -39,23 +39,30 @@ La base de datos `sifrah` corre en MongoDB 6.x en AWS EC2 (Ohio). A continuació
   "order_number": "ORD-2026-9481",
   "user_id": "ObjectId",
   "period_id": "2026-10-Q1",
+  "channel": "shared_store", // null | "shared_store" (compras desde link externo de socio)
   "status": "APPROVED", // "PENDING" | "APPROVED" | "REJECTED" | "DELIVERED"
   "payment_method": "VOUCHER", // "VOUCHER" | "IZIPAY" | "MERCADOPAGO" | "WALLET"
   "voucher_url": "https://sifrah-storage.b-cdn.net/vouchers/voucher_9481.jpg",
   "voucher_status": "APPROVED",
+  "buyer": { // Presente cuando channel === "shared_store"
+    "name": "María Gómez",
+    "document": "45678912",
+    "phone": "987654321",
+    "email": "maria@cliente.com"
+  },
   "items": [
     {
       "product_id": "ObjectId",
       "sku": "REJ-01",
       "name": "Rejuvenece Colágeno Hidrolizado",
       "quantity": 2,
-      "unit_price": 120.00,
+      "unit_price": 140.00,
       "points_per_unit": 40,
-      "subtotal": 240.00,
+      "subtotal": 280.00,
       "subtotal_points": 80
     }
   ],
-  "total_amount": 240.00,
+  "total_amount": 280.00,
   "total_points": 80,
   "shipping_address": {
     "department": "Lima",
