@@ -40,7 +40,7 @@ Este proyecto está configurado bajo el estándar **AI-Ready** para asistentes c
 ```text
 sifrah-docs/
 ├── index.html                   # 🌐 Portal maestro con Topología 3D, Lector de Docs y AI Playbook
-├── docs-data.js                 # ⚡ Base de datos indexada en JSON de los 75 documentos Markdown
+├── docs-data.js                 # ⚡ Catálogo indexado de todos los documentos Markdown y PDF (lo genera build-docs.js)
 ├── AGENTS.md                    # 🤖 Manual maestro canónico para agentes de IA
 ├── CONTRIBUTING.md              # 📘 Protocolo oficial de contribución para el equipo
 ├── .cursorrules                 # ⚡ Reglas automáticas para Cursor IDE
@@ -73,7 +73,9 @@ Para agregar nuevas características o documentar cambios en el sistema:
 1. Crea o actualiza el archivo Markdown en el eje temático correspondiente (`01-`, `02-`, `03-`, `04-`, `06-`):
    - Documentación técnica de una funcionalidad → `02-`, `03-` o `04-` según la capa.
    - Manual de usuario (paso a paso con capturas) → `06-manuales-de-usuario/`: un `.md` con las capturas en `img/<manual>/` (rutas relativas a la raíz, p. ej. `06-manuales-de-usuario/img/<manual>/paso.png`) y, si existe, su PDF imprimible al lado.
-   - Documento funcional o propuesta de negocio (Word/PDF) → `05-archivo-historico/funcionales/`.
+   - Documento funcional o propuesta de negocio (Word/PDF) → `05-archivo-historico/funcionales/`. Si es un `.docx`, súbelo también convertido a PDF: los navegadores no muestran Word.
+   - **Los PDF se indexan solos** y se abren en el lector PDF integrado del portal (miniaturas, zoom, pantalla completa y descarga). Para darle un título legible, añádelo a `PDF_TITLES` en `build-docs.js`; si no, se deriva del nombre del archivo. Los enlaces a `.pdf` o `.md` dentro de un documento también se abren en el lector.
+   - El lector PDF completo funciona con `npm run dev` o GitHub Pages. Si abres `index.html` con doble clic (`file://`), se usa el visor nativo del navegador.
 2. Si tomas decisiones importantes de arquitectura, usa la plantilla [templates/ADR_TEMPLATE.md](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/templates/ADR_TEMPLATE.md).
 3. Re-indexa el catálogo ejecutando:
    ```bash

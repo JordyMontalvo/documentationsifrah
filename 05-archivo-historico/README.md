@@ -25,7 +25,7 @@ Este directorio centraliza **toda la documentación técnica, funcional y de des
 * [`DEBUG_PRODUCCION.md`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/app/DEBUG_PRODUCCION.md) & [`INSTRUCCIONES_DEBUG.md`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/app/INSTRUCCIONES_DEBUG.md): Guía de resolución de incidencias en producción.
 * [`REDIRECCION_AUTOMATICA.md`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/app/REDIRECCION_AUTOMATICA.md): Manejo de sesiones y rutas protegidas.
 * [`ESTILOS_ORGANIZADOS.md`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/app/ESTILOS_ORGANIZADOS.md) & [`REORGANIZACION_ESTILOS.md`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/app/REORGANIZACION_ESTILOS.md): Guía del sistema de diseño CSS.
-* [`Guia_Publicacion_Google_Play_Sifrah.pdf`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/app/Guia_Publicacion_Google_Play_Sifrah.pdf): Manual paso a paso para compilación y subida a Google Play Store.
+* [`Guia_Publicacion_Google_Play_Sifrah.pdf`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/04-devops-y-despliegues/Guia_Publicacion_Google_Play_Sifrah.pdf): Manual paso a paso para compilación y subida a Google Play Store (copia única en `04-devops-y-despliegues/`).
 
 ---
 
@@ -63,8 +63,8 @@ Este directorio centraliza **toda la documentación técnica, funcional y de des
 ---
 
 ### 7. 📑 Especificaciones Funcionales del Negocio (`repos_docs/funcionales/`)
-* [`Documento_Funcional_Validacion_Vouchers_SIFRAH 2.docx`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/funcionales/Documento_Funcional_Validacion_Vouchers_SIFRAH%202.docx): Especificación del módulo de validación de depósitos bancarios.
-* [`bono_ahorro_sifrah.docx`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/funcionales/bono_ahorro_sifrah.docx): Reglas financieras del Bono de Ahorro.
-* [`bono_generacional_vip_sifrah.docx`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/funcionales/bono_generacional_vip_sifrah.docx): Reglas del Bono Generacional VIP para líderes Diamante.
+* [`Documento_Funcional_Validacion_Vouchers_SIFRAH 2.docx`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/funcionales/Documento_Funcional_Validacion_Vouchers_SIFRAH%202.docx): Especificación del módulo de validación de depósitos bancarios. Versión PDF para el lector: [`Documento_Funcional_Validacion_Vouchers_SIFRAH.pdf`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/05-archivo-historico/funcionales/Documento_Funcional_Validacion_Vouchers_SIFRAH.pdf).
+* [`bono_ahorro_sifrah.docx`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/funcionales/bono_ahorro_sifrah.docx): Reglas financieras del Bono de Ahorro. Versión PDF: [`bono_ahorro_sifrah.pdf`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/05-archivo-historico/funcionales/bono_ahorro_sifrah.pdf).
+* [`bono_generacional_vip_sifrah.docx`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/funcionales/bono_generacional_vip_sifrah.docx): Reglas del Bono Generacional VIP para líderes Diamante. Versión PDF: [`bono_generacional_vip_sifrah.pdf`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/05-archivo-historico/funcionales/bono_generacional_vip_sifrah.pdf).
 * [`Logica_Promociones_SIFRAH.pdf`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/repos_docs/funcionales/Logica_Promociones_SIFRAH.pdf): Lógica de negocio de promociones temporales.
 * [`Propuesta_Audio_en_Vivo_Mixlr_SIFRAH.pdf`](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/05-archivo-historico/funcionales/Propuesta_Audio_en_Vivo_Mixlr_SIFRAH.pdf): Propuesta funcional original de Audio en vivo (20/10/2026, con Mixlr y maquetas). Se implementó con AzuraCast; ver el manual de usuario en `06-manuales-de-usuario/`.
