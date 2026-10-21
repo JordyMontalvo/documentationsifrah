@@ -135,3 +135,33 @@ La base de datos `sifrah` corre en MongoDB 6.x en AWS EC2 (Ohio). A continuació
   "created_at": "ISODate"
 }
 ```
+
+---
+
+## 🎙️ 6. Colección `broadcasts` (Audio en Vivo)
+
+Encuentros/transmisiones en vivo. Separada de `audios` (Biblioteca de audios grabados).
+
+```json
+{
+  "_id": "ObjectId",
+  "id": "9f1c…",                       // lib.rand()
+  "title": "Conecta con tu propósito", // requerido
+  "author": "Jesús Muñoz",             // expositor (default "Equipo SIFRAH")
+  "description": "Encuentro de liderazgo y desarrollo personal.",
+  "image": "https://sifraht.b-cdn.net/audios/portada.jpg",
+  "scheduled_start": "2026-12-02T00:00:00.000Z", // UTC; ingresado en hora de Perú (19:00)
+  "scheduled_end": "2026-12-02T01:30:00.000Z",
+  "timezone": "America/Lima",
+  "status": "scheduled",               // "scheduled" | "live" | "ended" | "cancelled"
+  "stream_url": "",                    // vacío = AZURACAST_STREAM_URL
+  "station": "",                       // vacío = AZURACAST_STATION
+  "live_started_at": "ISODate",        // al pasar a live
+  "live_ended_at": "ISODate",          // al pasar a ended
+  "created_at": "ISODate",
+  "updated_at": "ISODate"
+}
+```
+
+* Solo un encuentro debe estar en `live` a la vez (el admin finaliza el anterior al poner otro en vivo).
+* Publicar o programar (`scheduled`) **no** significa transmitir.

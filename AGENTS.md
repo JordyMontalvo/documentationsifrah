@@ -18,6 +18,7 @@ Sifrah es una plataforma empresarial híbrida de e-commerce y multinivel (MLM) c
 | **Modelos ML Liderazgo**| `ai_prediccion/`| Python Flask (5000/5002), Scikit | Modelos predictivos de retención, volumen y churn de líderes. |
 | **Persistencia Central**| `db/` (Remoto) | MongoDB 6.x en AWS EC2 (Ohio) | Base de datos `sifrah` en `ec2-18-220-240-71.us-east-2.compute.amazonaws.com:27017`. |
 | **CDN & Almacenamiento**| Externo | Bunny.net Edge Storage | Hospedaje y entrega de vouchers bancarios y multimedia. |
+| **Audio en Vivo** | Droplet `sifrahCast` | AzuraCast (Icecast + Liquidsoap, Docker) | Transmisiones en vivo en `radio.serve-sifrah.xyz`; el expositor emite por Web DJ. |
 
 ---
 
@@ -51,6 +52,13 @@ Cualquier IA que genere código DEBE respetar estrictamente estas directrices:
 * **Acreditación de Puntos:** Al aprobar la compra en Admin (`/tienda`), los puntos de los productos se suman a `user.points` del socio vendedor, se evalúa si califica a activo (`points >= 120`) y se actualiza la cascada `lib.updateTotalPointsCascade`.
 * **Stock sin sucursal física:** Las órdenes de tienda compartida tienen `office: null`. Todo handler de aprobación/anulación debe verificar la existencia de `office` antes de descontar inventario local para evitar excepciones de puntero nulo.
 
+### 6. Audio en Vivo (AzuraCast)
+* **Programado ≠ En vivo:** crear, editar o programar un encuentro en `broadcasts` **nunca** lo pone en el aire. Solo la acción explícita `setStatus: 'live'` del admin lo hace.
+* **Fuente de verdad:** el `status` de `broadcasts` define qué encuentro está en vivo; la API `now-playing` de AzuraCast (`live.is_live`) confirma si el expositor realmente transmite. Si AzuraCast no responde, **no** asumir "fuera del aire" (`reachable: false`).
+* **Un solo encuentro en vivo** a la vez; nunca reproducir Biblioteca y transmisión en vivo simultáneamente.
+* **No borrar** la playlist "Fuera del aire (silencio)" de la estación: sin AutoDJ el estado en vivo no se detecta.
+* El expositor transmite con **Firefox** (Chrome con micrófono real corta la emisión).
+
 ---
 
 ## 📂 3. Mapa de Rutas de Archivos ("¿Dónde está qué?")
@@ -67,6 +75,8 @@ Cualquier IA que genere código DEBE respetar estrictamente estas directrices:
 | **Validación Administrativa de Vouchers** | `admin/src/views/ValidacionVouchers.vue` |
 | **Compras de Tienda Compartida (Admin)** | `admin/src/views/StoreOrders.vue` y `server/pages/api/admin/store-orders.js` |
 | **Checkout de Tienda y Aprobaciones** | `server/pages/api/public/store-checkout.js` y `server/pages/api/admin/activations.js` |
+| **Audio en Vivo (socio)** | `app/src/views/app/Audios.vue` y `app/src/components/LiveAudioPlayer.vue` |
+| **Audio en Vivo (admin y API)** | `admin/src/views/Broadcasts.vue`, `server/pages/api/admin/broadcasts.js` y `server/pages/api/app/live.js` |
 | **Kardex y Stock de Sucursales** | `admin/src/views/Kadex.vue` |
 | **Cálculo de Bonos y Rangos en Go** | `cierre_engine/main.go` y `cierre_engine/engine/` |
 | **Conexión a MongoDB** | `server/components/db.js` |

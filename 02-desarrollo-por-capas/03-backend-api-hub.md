@@ -73,3 +73,16 @@ async function procesarRetiro(userId, monto) {
 3. **`POST /api/admin/activations` (Acción `approve` / `cancel`):**
    - Al aprobar: suma `activation.points` a `user.points` del socio vendedor, evalúa si califica a activo (`points >= 120`), ejecuta `lib.updateTotalPointsCascade` y maneja con seguridad pedidos sin almacén físico (`office: null`).
    - Al anular: revierte los puntos exactos del socio y actualiza la cascada del árbol.
+
+---
+
+## 🎙️ 5. Audio en Vivo con AzuraCast (`server/pages/api/`)
+
+1. **`GET/POST/DELETE /api/admin/broadcasts`** (requiere sesión admin: 401 sin sesión, 403 si no es admin):
+   - Acciones `add`, `edit`, `delete` y `setStatus` (`scheduled` | `live` | `ended` | `cancelled`) sobre la colección `broadcasts`.
+   - `setStatus: 'live'` registra `live_started_at`; `'ended'` registra `live_ended_at`. Editar no altera el estado si no se envía.
+2. **`GET /api/app/live`:**
+   - Devuelve `live` (encuentro con `status:'live'`), `upcoming` (programados futuros, sin fecha al final, máx. 10) y `azuracast`.
+   - Si hay `live`, consulta `GET {AZURACAST_BASE_URL}/api/nowplaying/{station}` (timeout 4 s) para confirmar la emisión real (`onair`, `listeners`). Si AzuraCast no responde devuelve `reachable:false` y **no** asume fuera del aire.
+   - Variables: `AZURACAST_BASE_URL`, `AZURACAST_STATION`, `AZURACAST_STREAM_URL`.
+   - Detalle completo en [`audio-en-vivo-azuracast.md`](audio-en-vivo-azuracast.md).

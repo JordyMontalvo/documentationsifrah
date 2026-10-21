@@ -63,3 +63,20 @@ pm2 restart sifrah-api    # Reiniciar servidor API
    cd android && ./gradlew bundleRelease
    ```
 3. El archivo generado en `app/build/outputs/bundle/release/app-release.aab` se sube a Google Play Console.
+
+---
+
+## 🎙️ 4. Servidor de Audio en Vivo (AzuraCast)
+
+Droplet dedicado **separado** del backend (el streaming consume ancho de banda y no debe afectar a la API).
+
+- **Droplet:** `sifrahCast` · `24.199.93.133` · `s-2vcpu-2gb` · Ubuntu 24.04 · swap 2 GB.
+- **Dominio:** `radio.serve-sifrah.xyz` (registro A) con HTTPS de Let's Encrypt (renovación automática).
+- **Instalación:** Docker oficial en `/var/azuracast` (`docker.sh`, canal Stable).
+- **Conexión por terminal:**
+  ```bash
+  ssh -i sifrah_dev_key.pem -o IdentitiesOnly=yes root@24.199.93.133
+  ```
+- **Variables nuevas en el backend** (`/var/www/sifrah-server/.env`): `AZURACAST_BASE_URL`, `AZURACAST_STATION`, `AZURACAST_STREAM_URL`. Aplicar con `pm2 restart sifrah-server --update-env` (cargar nvm antes).
+- **No borrar** la playlist "Fuera del aire (silencio)": sin ella el estado en vivo no se detecta.
+- Configuración, operación y troubleshooting completos en [`../02-desarrollo-por-capas/audio-en-vivo-azuracast.md`](../02-desarrollo-por-capas/audio-en-vivo-azuracast.md).

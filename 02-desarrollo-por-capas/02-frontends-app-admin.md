@@ -26,6 +26,10 @@ La aplicación móvil y web utilizada diariamente por los distribuidores de la r
 5. **`public/SharedStore.vue` y `StoreCheckout.vue` (Tienda Externa Compartida):**
    - Catálogo público accesible por `/tienda/:userId` donde clientes externos compran a Precio Público.
    - Puntos (PTS) ocultos para el público externo; formulario de entrega y pago con voucher o tarjeta.
+6. **`app/Audios.vue` + `components/LiveAudioPlayer.vue` (Audio en Vivo):**
+   - Pestañas **Biblioteca | En vivo** en `/audios`. Al entrar abre En vivo solo si hay transmisión activa; `?tab=en-vivo` la fuerza.
+   - Reproductor propio con estados fuera del aire / en vivo / conectando / escuchando / esperando al expositor; sondeo de `/api/app/live` cada 30 s, Recordarme (Google Calendar / .ics).
+   - Detalle completo en [`audio-en-vivo-azuracast.md`](audio-en-vivo-azuracast.md).
 
 ---
 
@@ -45,3 +49,6 @@ Panel de control para la dirección corporativa, finanzas y operaciones logísti
    - Tab dedicado dentro de Afiliaciones (`/tienda`).
    - Muestra las órdenes de clientes externos, comprador, socio dueño del link, productos, importe y la columna **Puntos** acumulados para el socio.
    - Al aprobar la orden, acredita automáticamente los puntos al socio vendedor en su red.
+5. **`Broadcasts.vue` (Audio en Vivo - menú "Audio en vivo", `/audio-en-vivo`):**
+   - CRUD de encuentros (título, expositor, portada, horario en hora de Perú) y acciones explícitas **Poner en vivo / Finalizar / Cancelar**.
+   - Guardar o programar un encuentro **no** lo pone en el aire. Ver [`audio-en-vivo-azuracast.md`](audio-en-vivo-azuracast.md).
