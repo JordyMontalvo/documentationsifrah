@@ -40,7 +40,8 @@ files.forEach((f) => {
 
   // Determinar Categoría
   let category = '01. Arquitectura y Reglas';
-  if (relPath.startsWith('02-desarrollo-por-capas')) category = '02. Desarrollo por Capas';
+  if (relPath.startsWith('06-manuales-de-usuario')) category = '06. Manuales de Usuario';
+  else if (relPath.startsWith('02-desarrollo-por-capas')) category = '02. Desarrollo por Capas';
   else if (relPath.startsWith('03-ia-salud-y-datos')) category = '03. IA, Salud y Datos';
   else if (relPath.startsWith('04-devops-y-despliegues')) category = '04. DevOps y Despliegues';
   else if (relPath.startsWith('05-archivo-historico')) {

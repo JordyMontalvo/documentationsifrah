@@ -35,7 +35,7 @@ Este proyecto está configurado bajo el estándar **AI-Ready** para asistentes c
 
 ---
 
-## 📁 Estructura del Repositorio (Organizado en 5 Ejes Lógicos)
+## 📁 Estructura del Repositorio (Organizado en 6 Ejes Lógicos)
 
 ```text
 sifrah-docs/
@@ -58,6 +58,8 @@ sifrah-docs/
 │   ├── ai_prediccion/           # Memorias técnicas y manuales de modelos predictivos
 │   ├── infraestructura/         # Procedimientos de migración y servidores
 │   └── funcionales/             # Documentos funcionales Word/PDF de negocio
+├── 06-manuales-de-usuario/        # 📖 Manuales paso a paso con capturas reales (Markdown + PDF imprimible)
+│   └── img/                     # Capturas anotadas, una carpeta por manual
 │
 ├── archify_diagrams/            # 📊 Diagramas interactivos vectoriales (Archify Engine)
 └── templates/                   # 📝 Plantillas ADR para registrar decisiones mayores
@@ -68,7 +70,10 @@ sifrah-docs/
 ## 👥 Cómo Alimentar y Colaborar en esta Documentación
 
 Para agregar nuevas características o documentar cambios en el sistema:
-1. Crea o actualiza el archivo Markdown en el eje temático correspondiente (`01-`, `02-`, `03-`, `04-`).
+1. Crea o actualiza el archivo Markdown en el eje temático correspondiente (`01-`, `02-`, `03-`, `04-`, `06-`):
+   - Documentación técnica de una funcionalidad → `02-`, `03-` o `04-` según la capa.
+   - Manual de usuario (paso a paso con capturas) → `06-manuales-de-usuario/`: un `.md` con las capturas en `img/<manual>/` (rutas relativas a la raíz, p. ej. `06-manuales-de-usuario/img/<manual>/paso.png`) y, si existe, su PDF imprimible al lado.
+   - Documento funcional o propuesta de negocio (Word/PDF) → `05-archivo-historico/funcionales/`.
 2. Si tomas decisiones importantes de arquitectura, usa la plantilla [templates/ADR_TEMPLATE.md](file:///Users/jordymontalvo/proyectos/sifrah/sifrah-docs/templates/ADR_TEMPLATE.md).
 3. Re-indexa el catálogo ejecutando:
    ```bash

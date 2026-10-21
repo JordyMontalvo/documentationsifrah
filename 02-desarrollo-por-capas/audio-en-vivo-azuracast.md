@@ -4,7 +4,9 @@ Este módulo documenta el funcionamiento técnico, operativo y de negocio del **
 
 > **Alcance actual:** versión **web** (expositor desde navegador + socios escuchando en la app web, incluida la web en celular). La capa **móvil nativa (Capacitor: audio en segundo plano)** queda pendiente.
 >
-> **Especificación funcional de origen:** `SIFRAH_Audio_en_Vivo_Documentacion.pdf` (20/10/2026).
+> **Especificación funcional de origen:** [`Propuesta_Audio_en_Vivo_Mixlr_SIFRAH.pdf`](05-archivo-historico/funcionales/Propuesta_Audio_en_Vivo_Mixlr_SIFRAH.pdf) (20/10/2026).
+>
+> **Manual de usuario (admin, expositor y socio, con capturas reales):** [`manual-audio-en-vivo.md`](06-manuales-de-usuario/manual-audio-en-vivo.md) · PDF imprimible [`SIFRAH_Manual_Audio_en_Vivo.pdf`](06-manuales-de-usuario/SIFRAH_Manual_Audio_en_Vivo.pdf).
 
 ---
 
