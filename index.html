@@ -1046,6 +1046,15 @@
       margin: 20px 0;
       font-size: 13px;
     }
+    .markdown-render img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 16px auto;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
     .markdown-render th {
       background: rgba(255, 255, 255, 0.05);
       color: #10b981;
@@ -1276,6 +1285,168 @@
       color: #040711;
       box-shadow: 0 0 14px rgba(16, 185, 129, 0.4);
       transform: translateY(-1px);
+    }
+
+    /* LECTOR DE PDF (PDF.js) */
+    /* Sin esto, el contenido ancho estira las columnas del grid y desborda en móvil */
+    .reader-layout > * { min-width: 0; }
+    .reader-layout.pdf-mode { grid-template-columns: 310px 1fr; }
+    .reader-layout.pdf-mode .reader-toc-aside { display: none; }
+    .reader-layout.zen-mode.pdf-mode { max-width: 1200px; }
+    @media (max-width: 1280px) {
+      .reader-layout.pdf-mode { grid-template-columns: 300px 1fr; }
+    }
+    @media (max-width: 900px) {
+      .reader-layout.pdf-mode { grid-template-columns: 1fr; }
+    }
+    .pdf-viewer {
+      display: flex;
+      flex-direction: column;
+      height: 700px;
+      background: #070b15;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+      outline: none;
+    }
+    .pdf-viewer:focus-visible { border-color: var(--border-glow); }
+    .pdf-viewer:fullscreen { height: 100vh; border-radius: 0; border: none; }
+    .pdf-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 10px 12px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .pdf-tool-group { display: inline-flex; align-items: center; gap: 4px; }
+    .pdf-spacer { flex: 1; }
+    .pdf-tool-sep { width: 1px; height: 22px; background: rgba(255, 255, 255, 0.1); margin: 0 4px; }
+    .pdf-tool-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-body);
+      min-width: 32px;
+      height: 32px;
+      padding: 0 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .pdf-tool-btn:hover:not(:disabled) {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+    .pdf-tool-btn:disabled { opacity: 0.35; cursor: default; }
+    .pdf-tool-btn.active { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399; }
+    .pdf-tool-btn.primary { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.35); color: #34d399; }
+    .pdf-page-input {
+      width: 48px;
+      height: 32px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      -moz-appearance: textfield;
+    }
+    .pdf-page-input::-webkit-inner-spin-button,
+    .pdf-page-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    .pdf-page-input:focus { outline: none; border-color: #10b981; }
+    .pdf-page-total, .pdf-zoom-label { font-size: 12.5px; color: var(--text-muted); min-width: 44px; text-align: center; }
+    .pdf-body { flex: 1; display: flex; min-height: 0; }
+    .pdf-thumbs {
+      position: relative;
+      width: 150px;
+      flex-shrink: 0;
+      overflow-y: auto;
+      padding: 12px 10px;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .pdf-viewer.thumbs-hidden .pdf-thumbs { display: none; }
+    .pdf-thumb {
+      background: none;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      padding: 5px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-dim);
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .pdf-thumb canvas { width: 100%; height: auto; border-radius: 4px; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45); }
+    .pdf-thumb:hover { background: rgba(255, 255, 255, 0.04); color: var(--text-muted); }
+    .pdf-thumb.active { border-color: #10b981; background: rgba(16, 185, 129, 0.08); color: #34d399; }
+    .pdf-pages {
+      position: relative;
+      flex: 1;
+      overflow: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.06), transparent 60%), #070b15;
+    }
+    .pdf-page {
+      position: relative;
+      flex-shrink: 0;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+    }
+    .pdf-page canvas { display: block; width: 100%; height: 100%; border-radius: 4px; }
+    .pdf-status { margin: auto; color: var(--text-muted); font-size: 13px; text-align: center; }
+    .pdf-native { flex: 1; width: 100%; border: 0; background: #fff; }
+    .pdf-native-note {
+      padding: 8px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: rgba(245, 158, 11, 0.08);
+      border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+    }
+    .pdf-viewer.native-mode .pdf-nav-group,
+    .pdf-viewer.native-mode .pdf-zoom-group,
+    .pdf-viewer.native-mode .pdf-tool-sep,
+    .pdf-viewer.native-mode #pdf-thumbs-btn { display: none; }
+    .reader-doc-badge {
+      margin-left: auto;
+      flex-shrink: 0;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #fda4af;
+      background: rgba(244, 63, 94, 0.12);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      padding: 1px 6px;
+      border-radius: 6px;
+    }
+    @media (max-width: 900px) {
+      .pdf-viewer { height: 75vh; }
+      .pdf-thumbs { display: none; }
     }
 
     /* PRINT STYLES */
@@ -1557,9 +1728,9 @@
               <div class="reader-meta-stats" id="reader-stats-pill">⏱️ 3 min • 📝 120 líneas</div>
               <button type="button" id="btn-fav-star" onclick="toggleFavoriteCurrentDoc(this)" title="Guardar en favoritos" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #fbbf24; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 13px;">☆</button>
               <button type="button" style="background: rgba(139, 92, 246, 0.18); color: #c4b5fd; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.35); cursor: pointer; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;" onclick="copyPromptForAI(this)" title="Copiar empaquetado para Cursor, Claude o ChatGPT">🤖 Copiar para IA</button>
-              <button type="button" style="background: rgba(255,255,255,0.08); color: #fff; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="copyCurrentMarkdown(this)">📋 Markdown</button>
+              <button type="button" id="btn-copy-markdown" style="background: rgba(255,255,255,0.08); color: #fff; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="copyCurrentMarkdown(this)">📋 Markdown</button>
               <button type="button" id="btn-toggle-zen" style="background: rgba(255,255,255,0.06); color: #94a3b8; padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="toggleZenMode(this)" title="Modo Zen (Lectura expandida sin barras laterales)">⛶ Zen</button>
-              <button type="button" style="background: rgba(255,255,255,0.06); color: #94a3b8; padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="window.print()" title="Imprimir o Guardar como PDF">🖨️ PDF</button>
+              <button type="button" id="btn-print-doc" style="background: rgba(255,255,255,0.06); color: #94a3b8; padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; font-size: 12px; font-weight: 600;" onclick="window.print()" title="Imprimir o Guardar como PDF">🖨️ PDF</button>
               <a id="github-doc-link" href="https://github.com/JordyMontalvo/documentationsifrah" target="_blank" style="background: rgba(16,185,129,0.15); color: #34d399; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.3); text-decoration: none; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">GitHub ↗</a>
             </div>
           </div>
@@ -2149,7 +2320,9 @@ Requisitos:
           btn.type = 'button';
           btn.className = 'reader-doc-btn' + (realIdx === currentDocIndex ? ' active' : '');
           btn.id = 'doc-btn-' + realIdx;
-          btn.innerHTML = `<span>📄</span> <span style="overflow:hidden; text-overflow:ellipsis;">${doc.title || doc.filename}</span>`;
+          btn.innerHTML = isPdfDoc(doc)
+            ? `<span>📕</span> <span style="overflow:hidden; text-overflow:ellipsis;">${doc.title || doc.filename}</span><span class="reader-doc-badge">PDF</span>`
+            : `<span>📄</span> <span style="overflow:hidden; text-overflow:ellipsis;">${doc.title || doc.filename}</span>`;
           btn.title = doc.title || doc.filename;
           btn.onclick = () => loadDoc(realIdx);
           container.appendChild(btn);
@@ -2176,7 +2349,9 @@ Requisitos:
       // Actualizar stats pill
       const statsPill = document.getElementById('reader-stats-pill');
       if (statsPill) {
-        statsPill.innerHTML = `<span>⏱️ ${doc.readTimeMinutes} min</span> • <span>📝 ${doc.lineCount} líneas</span> • <span>🔤 ${doc.wordCount.toLocaleString()} palabras</span>`;
+        statsPill.innerHTML = isPdfDoc(doc)
+          ? `<span>📕 PDF</span> • <span id="pdf-pages-count">… páginas</span> • <span>💾 ${formatFileSize(doc.sizeBytes)}</span>`
+          : `<span>⏱️ ${doc.readTimeMinutes} min</span> • <span>📝 ${doc.lineCount} líneas</span> • <span>🔤 ${doc.wordCount.toLocaleString()} palabras</span>`;
       }
 
       // Actualizar enlace GitHub
@@ -2188,8 +2363,19 @@ Requisitos:
       // Actualizar estado de favorito
       updateFavoriteButton(index);
 
-      // Renderizar Markdown
+      // Cerrar el PDF anterior y ajustar la vista (sin TOC ni botones de Markdown para PDF)
+      destroyPdfViewer();
+      setReaderModeForDoc(doc);
+
+      // Renderizar Markdown (o el visor si es un PDF)
       const renderTarget = document.getElementById('markdown-render-target');
+      if (renderTarget && isPdfDoc(doc)) {
+        renderPdfDoc(doc, renderTarget);
+        renderNavFooter(index);
+        const scrollCard = document.getElementById('reader-content-card');
+        if (scrollCard) scrollCard.scrollTop = 0;
+        return;
+      }
       if (renderTarget) {
         if (typeof marked !== 'undefined') {
           renderTarget.innerHTML = marked.parse(doc.content);
@@ -2207,6 +2393,7 @@ Requisitos:
         // Mejoras visuales interactivas
         enhanceCallouts(renderTarget);
         enhanceCodeBlocks(renderTarget);
+        enhanceDocLinks(renderTarget);
         buildTableOfContents(renderTarget);
         renderNavFooter(index);
 
@@ -2562,7 +2749,7 @@ ${doc.content}
         html += `
           <div class="spotlight-item ${isSel ? 'selected' : ''}" onclick="selectSpotlightItem(${item.realIdx})">
             <div class="spotlight-item-top">
-              <span class="spotlight-item-title">📄 ${item.doc.title || item.doc.filename}</span>
+              <span class="spotlight-item-title">${isPdfDoc(item.doc) ? '📕' : '📄'} ${item.doc.title || item.doc.filename}</span>
               <span class="spotlight-item-cat">${item.doc.category.split(' ')[1] || item.doc.category}</span>
             </div>
             <div class="spotlight-item-snippet">${snippetText}</div>
@@ -2624,6 +2811,423 @@ ${doc.content}
         const original = btn.innerHTML;
         btn.innerHTML = '✅ ¡Copiado!';
         setTimeout(() => { btn.innerHTML = original; }, 2000);
+      });
+    }
+
+    // ==========================================
+    // LECTOR DE PDF (PDF.js con respaldo al visor nativo del navegador)
+    // ==========================================
+    const PDFJS_BASE = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+    let pdfJsLoader = null;
+    let pdfState = null;
+
+    function isPdfDoc(doc) {
+      return !!doc && doc.type === 'pdf';
+    }
+
+    function formatFileSize(bytes) {
+      if (!bytes) return '';
+      return bytes >= 1048576 ? (bytes / 1048576).toFixed(1) + ' MB' : Math.round(bytes / 1024) + ' KB';
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function setReaderModeForDoc(doc) {
+      const isPdf = isPdfDoc(doc);
+      const layout = document.querySelector('.reader-layout');
+      if (layout) layout.classList.toggle('pdf-mode', isPdf);
+      ['btn-copy-markdown', 'btn-print-doc'].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = isPdf ? 'none' : '';
+      });
+    }
+
+    // Carga PDF.js bajo demanda: solo cuando se abre el primer PDF
+    function ensurePdfJs() {
+      if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+      if (!pdfJsLoader) {
+        pdfJsLoader = new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = PDFJS_BASE + 'pdf.min.js';
+          script.onload = () => {
+            if (!window.pdfjsLib) return reject(new Error('PDF.js no disponible'));
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_BASE + 'pdf.worker.min.js';
+            resolve(window.pdfjsLib);
+          };
+          script.onerror = () => {
+            pdfJsLoader = null;
+            reject(new Error('no se pudo cargar PDF.js'));
+          };
+          document.head.appendChild(script);
+        });
+      }
+      return pdfJsLoader;
+    }
+
+    function renderPdfDoc(doc, target) {
+      const url = doc.relPath.split('/').map(encodeURIComponent).join('/');
+      const title = escapeHtml(doc.title || doc.filename);
+      target.innerHTML = `
+        <div class="pdf-viewer" id="pdf-viewer" tabindex="0" aria-label="Visor PDF: ${title}">
+          <div class="pdf-toolbar" role="toolbar" aria-label="Controles del PDF">
+            <div class="pdf-tool-group pdf-nav-group">
+              <button type="button" class="pdf-tool-btn" id="pdf-prev-btn" title="Página anterior (←)" aria-label="Página anterior">‹</button>
+              <input type="number" class="pdf-page-input" id="pdf-page-input" min="1" value="1" aria-label="Número de página">
+              <span class="pdf-page-total" id="pdf-page-total">/ –</span>
+              <button type="button" class="pdf-tool-btn" id="pdf-next-btn" title="Página siguiente (→)" aria-label="Página siguiente">›</button>
+            </div>
+            <span class="pdf-tool-sep"></span>
+            <div class="pdf-tool-group pdf-zoom-group">
+              <button type="button" class="pdf-tool-btn" id="pdf-zoom-out-btn" title="Alejar (−)" aria-label="Alejar">−</button>
+              <span class="pdf-zoom-label" id="pdf-zoom-label">100%</span>
+              <button type="button" class="pdf-tool-btn" id="pdf-zoom-in-btn" title="Acercar (+)" aria-label="Acercar">+</button>
+              <button type="button" class="pdf-tool-btn active" id="pdf-fit-btn" title="Ajustar al ancho (0)" aria-label="Ajustar al ancho">↔ Ajustar</button>
+            </div>
+            <span class="pdf-spacer"></span>
+            <div class="pdf-tool-group">
+              <button type="button" class="pdf-tool-btn active" id="pdf-thumbs-btn" title="Mostrar u ocultar miniaturas" aria-label="Mostrar u ocultar miniaturas" aria-pressed="true">▤</button>
+              <button type="button" class="pdf-tool-btn" id="pdf-fullscreen-btn" title="Pantalla completa (F)" aria-label="Pantalla completa">⛶</button>
+              <a class="pdf-tool-btn" id="pdf-open-btn" href="${url}" target="_blank" rel="noopener" title="Abrir en una pestaña nueva">↗ Abrir</a>
+              <a class="pdf-tool-btn primary" id="pdf-download-btn" href="${url}" download="${escapeHtml(doc.filename)}" title="Descargar PDF">⬇ Descargar</a>
+            </div>
+          </div>
+          <div class="pdf-body" id="pdf-body">
+            <nav class="pdf-thumbs" id="pdf-thumbs" aria-label="Miniaturas de páginas"></nav>
+            <div class="pdf-pages" id="pdf-pages"><div class="pdf-status">Cargando PDF…</div></div>
+          </div>
+        </div>
+      `;
+
+      const state = { doc, url, pdf: null, pages: [], scale: 1, fit: true, current: 1, observers: [], cleanups: [], destroyed: false };
+      pdfState = state;
+      bindPdfControls(state);
+
+      // Abierto como archivo local (file://) el navegador bloquea PDF.js: usar el visor nativo
+      if (location.protocol === 'file:') {
+        renderNativePdf(state, 'Abriste el portal como archivo local, así que se usa el visor del navegador. Con <code>npm run dev</code> o GitHub Pages verás el lector completo.');
+        return;
+      }
+
+      ensurePdfJs()
+        .then((lib) => lib.getDocument(url).promise)
+        .then((pdf) => {
+          if (state.destroyed) {
+            pdf.destroy();
+            return;
+          }
+          state.pdf = pdf;
+          return setupPdfPages(state);
+        })
+        .catch((err) => {
+          if (!state.destroyed) renderNativePdf(state, `No se pudo usar el lector avanzado (${escapeHtml(err.message)}); se muestra el visor del navegador.`);
+        });
+    }
+
+    function bindPdfControls(state) {
+      const viewer = document.getElementById('pdf-viewer');
+      const input = document.getElementById('pdf-page-input');
+      document.getElementById('pdf-prev-btn').onclick = () => scrollToPdfPage(state, state.current - 1);
+      document.getElementById('pdf-next-btn').onclick = () => scrollToPdfPage(state, state.current + 1);
+      document.getElementById('pdf-zoom-in-btn').onclick = () => setPdfScale(state, Math.min(state.scale * 1.2, 4), false);
+      document.getElementById('pdf-zoom-out-btn').onclick = () => setPdfScale(state, Math.max(state.scale / 1.2, 0.3), false);
+      document.getElementById('pdf-fit-btn').onclick = () => setPdfScale(state, computePdfFitScale(state), true);
+      document.getElementById('pdf-fullscreen-btn').onclick = () => togglePdfFullscreen(viewer);
+      document.getElementById('pdf-thumbs-btn').onclick = (e) => {
+        const hidden = viewer.classList.toggle('thumbs-hidden');
+        e.currentTarget.classList.toggle('active', !hidden);
+        e.currentTarget.setAttribute('aria-pressed', String(!hidden));
+        if (state.fit && state.pdf) setPdfScale(state, computePdfFitScale(state), true);
+      };
+      input.onchange = () => scrollToPdfPage(state, parseInt(input.value, 10) || 1);
+
+      viewer.addEventListener('keydown', (e) => {
+        if (e.target === input || !state.pdf) return;
+        const actions = {
+          ArrowRight: () => scrollToPdfPage(state, state.current + 1),
+          ArrowLeft: () => scrollToPdfPage(state, state.current - 1),
+          '+': () => setPdfScale(state, Math.min(state.scale * 1.2, 4), false),
+          '=': () => setPdfScale(state, Math.min(state.scale * 1.2, 4), false),
+          '-': () => setPdfScale(state, Math.max(state.scale / 1.2, 0.3), false),
+          '0': () => setPdfScale(state, computePdfFitScale(state), true),
+          f: () => togglePdfFullscreen(viewer),
+          Home: () => scrollToPdfPage(state, 1),
+          End: () => scrollToPdfPage(state, state.pages.length)
+        };
+        if (actions[e.key] && !e.metaKey && !e.ctrlKey) {
+          e.preventDefault();
+          actions[e.key]();
+        }
+      });
+
+      // Reajustar al cambiar el tamaño de la ventana o entrar/salir de pantalla completa
+      let resizeTimer = null;
+      const refit = () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          if (state.fit && state.pdf && !state.destroyed) setPdfScale(state, computePdfFitScale(state), true);
+        }, 150);
+      };
+      window.addEventListener('resize', refit);
+      document.addEventListener('fullscreenchange', refit);
+      state.cleanups.push(() => {
+        window.removeEventListener('resize', refit);
+        document.removeEventListener('fullscreenchange', refit);
+        clearTimeout(resizeTimer);
+      });
+    }
+
+    async function setupPdfPages(state) {
+      const { pdf } = state;
+      for (let i = 1; i <= pdf.numPages; i++) {
+        state.pages.push({ page: await pdf.getPage(i), el: null, thumb: null, renderedScale: 0, renderingScale: 0 });
+        if (state.destroyed) return;
+      }
+
+      const pagesEl = document.getElementById('pdf-pages');
+      const thumbsEl = document.getElementById('pdf-thumbs');
+      pagesEl.innerHTML = '';
+      thumbsEl.innerHTML = '';
+      document.getElementById('pdf-page-total').textContent = '/ ' + pdf.numPages;
+      document.getElementById('pdf-page-input').max = pdf.numPages;
+      const countEl = document.getElementById('pdf-pages-count');
+      if (countEl) countEl.textContent = pdf.numPages + (pdf.numPages === 1 ? ' página' : ' páginas');
+
+      state.pages.forEach((p, idx) => {
+        const n = idx + 1;
+        const base = p.page.getViewport({ scale: 1 });
+
+        p.el = document.createElement('div');
+        p.el.className = 'pdf-page';
+        p.el.dataset.page = n;
+        p.el.setAttribute('role', 'img');
+        p.el.setAttribute('aria-label', 'Página ' + n);
+        pagesEl.appendChild(p.el);
+
+        p.thumb = document.createElement('button');
+        p.thumb.type = 'button';
+        p.thumb.className = 'pdf-thumb';
+        p.thumb.dataset.page = n;
+        p.thumb.setAttribute('aria-label', 'Ir a la página ' + n);
+        p.thumb.innerHTML = `<canvas style="aspect-ratio: ${base.width} / ${base.height}"></canvas><span>${n}</span>`;
+        p.thumb.onclick = () => scrollToPdfPage(state, n);
+        thumbsEl.appendChild(p.thumb);
+      });
+
+      state.scale = computePdfFitScale(state);
+      layoutPdfPages(state);
+
+      // Miniaturas: se dibujan al entrar en vista
+      const thumbObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          renderPdfThumb(state, Number(entry.target.dataset.page));
+          thumbObserver.unobserve(entry.target);
+        });
+      }, { root: thumbsEl, rootMargin: '300px 0px' });
+      state.pages.forEach((p) => thumbObserver.observe(p.thumb));
+      state.observers.push(thumbObserver);
+
+      // Páginas: se dibujan las cercanas a la vista y se sigue la página actual
+      let ticking = false;
+      pagesEl.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          ticking = false;
+          if (state.destroyed) return;
+          updateCurrentPdfPage(state);
+          renderVisiblePdfPages(state);
+        });
+      }, { passive: true });
+
+      updateCurrentPdfPage(state);
+      renderVisiblePdfPages(state);
+    }
+
+    function computePdfFitScale(state) {
+      const pagesEl = document.getElementById('pdf-pages');
+      if (!pagesEl || !state.pages.length) return 1;
+      const base = state.pages[0].page.getViewport({ scale: 1 });
+      const available = pagesEl.clientWidth - 48;
+      // Con la pestaña oculta el ancho es 0: conservar la escala actual
+      if (available <= 0) return state.scale;
+      return Math.max(0.3, Math.min(available / base.width, 2.5));
+    }
+
+    function layoutPdfPages(state) {
+      state.pages.forEach((p) => {
+        const vp = p.page.getViewport({ scale: state.scale });
+        p.el.style.width = Math.floor(vp.width) + 'px';
+        p.el.style.height = Math.floor(vp.height) + 'px';
+      });
+      document.getElementById('pdf-zoom-label').textContent = Math.round(state.scale * 100) + '%';
+      document.getElementById('pdf-fit-btn').classList.toggle('active', state.fit);
+    }
+
+    function setPdfScale(state, scale, fit) {
+      if (!state.pdf || state.destroyed) return;
+      const pagesEl = document.getElementById('pdf-pages');
+      const anchor = state.pages[state.current - 1];
+      const offsetRatio = anchor ? (pagesEl.scrollTop - anchor.el.offsetTop) / anchor.el.offsetHeight : 0;
+
+      state.scale = scale;
+      state.fit = fit;
+      layoutPdfPages(state);
+
+      // Mantener la misma posición de lectura tras el zoom
+      if (anchor) pagesEl.scrollTop = anchor.el.offsetTop + offsetRatio * anchor.el.offsetHeight;
+      renderVisiblePdfPages(state);
+    }
+
+    function renderVisiblePdfPages(state) {
+      const pagesEl = document.getElementById('pdf-pages');
+      if (!pagesEl) return;
+      const top = pagesEl.scrollTop - 600;
+      const bottom = pagesEl.scrollTop + pagesEl.clientHeight + 600;
+      state.pages.forEach((p, idx) => {
+        const pTop = p.el.offsetTop;
+        if (pTop + p.el.offsetHeight >= top && pTop <= bottom) renderPdfPage(state, idx + 1);
+      });
+    }
+
+    function drawPdfCanvas(page, scale) {
+      const dpr = window.devicePixelRatio || 1;
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.floor(viewport.width * dpr);
+      canvas.height = Math.floor(viewport.height * dpr);
+      const task = page.render({
+        canvasContext: canvas.getContext('2d'),
+        viewport,
+        transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null
+      });
+      return task.promise.then(() => canvas);
+    }
+
+    function renderPdfPage(state, n) {
+      const p = state.pages[n - 1];
+      const scale = state.scale;
+      if (!p || p.renderedScale === scale || p.renderingScale === scale) return;
+      p.renderingScale = scale;
+      drawPdfCanvas(p.page, scale)
+        .then((canvas) => {
+          // Si mientras tanto cambió el zoom, se descarta este dibujo
+          if (state.destroyed || state.scale !== scale) return;
+          p.el.innerHTML = '';
+          p.el.appendChild(canvas);
+          p.renderedScale = scale;
+        })
+        .catch(() => {})
+        .finally(() => {
+          if (p.renderingScale === scale) p.renderingScale = 0;
+        });
+    }
+
+    function renderPdfThumb(state, n) {
+      const p = state.pages[n - 1];
+      if (!p) return;
+      const base = p.page.getViewport({ scale: 1 });
+      drawPdfCanvas(p.page, 120 / base.width)
+        .then((canvas) => {
+          if (state.destroyed) return;
+          const old = p.thumb.querySelector('canvas');
+          canvas.style.aspectRatio = old.style.aspectRatio;
+          p.thumb.replaceChild(canvas, old);
+        })
+        .catch(() => {});
+    }
+
+    function updateCurrentPdfPage(state) {
+      const pagesEl = document.getElementById('pdf-pages');
+      const thumbsEl = document.getElementById('pdf-thumbs');
+      if (!pagesEl || !state.pages.length) return;
+
+      const marker = pagesEl.scrollTop + pagesEl.clientHeight * 0.35;
+      let current = 1;
+      for (const p of state.pages) {
+        if (p.el.offsetTop <= marker) current = Number(p.el.dataset.page);
+        else break;
+      }
+
+      state.current = current;
+      document.getElementById('pdf-page-input').value = current;
+      document.getElementById('pdf-prev-btn').disabled = current <= 1;
+      document.getElementById('pdf-next-btn').disabled = current >= state.pages.length;
+
+      state.pages.forEach((p, idx) => p.thumb.classList.toggle('active', idx + 1 === current));
+      // Mantener visible la miniatura activa sin mover el resto de la página
+      const thumb = state.pages[current - 1].thumb;
+      if (thumbsEl && (thumb.offsetTop < thumbsEl.scrollTop || thumb.offsetTop + thumb.offsetHeight > thumbsEl.scrollTop + thumbsEl.clientHeight)) {
+        thumbsEl.scrollTop = thumb.offsetTop - 12;
+      }
+    }
+
+    function scrollToPdfPage(state, n) {
+      if (!state.pages.length) return;
+      const target = Math.max(1, Math.min(n, state.pages.length));
+      const pagesEl = document.getElementById('pdf-pages');
+      pagesEl.scrollTo({ top: state.pages[target - 1].el.offsetTop - 16, behavior: 'smooth' });
+    }
+
+    function togglePdfFullscreen(viewer) {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (viewer && viewer.requestFullscreen) viewer.requestFullscreen();
+    }
+
+    function renderNativePdf(state, note) {
+      const viewer = document.getElementById('pdf-viewer');
+      const body = document.getElementById('pdf-body');
+      if (!viewer || !body) return;
+      viewer.classList.add('native-mode');
+      body.innerHTML = `<iframe class="pdf-native" src="${state.url}#view=FitH" title="${escapeHtml(state.doc.title || state.doc.filename)}"></iframe>`;
+      const noteEl = document.createElement('div');
+      noteEl.className = 'pdf-native-note';
+      noteEl.innerHTML = 'ℹ️ ' + note;
+      viewer.insertBefore(noteEl, body);
+      const countEl = document.getElementById('pdf-pages-count');
+      if (countEl) countEl.textContent = 'vista nativa';
+    }
+
+    function destroyPdfViewer() {
+      if (!pdfState) return;
+      const state = pdfState;
+      pdfState = null;
+      state.destroyed = true;
+      state.observers.forEach((o) => o.disconnect());
+      state.cleanups.forEach((fn) => fn());
+      if (state.pdf) state.pdf.destroy();
+      const viewer = document.getElementById('pdf-viewer');
+      if (viewer && document.fullscreenElement === viewer) document.exitFullscreen();
+    }
+
+    // Los enlaces a otros .md o .pdf del portal se abren dentro del lector
+    function findDocIndexByHref(href) {
+      if (!window.SIFRAH_DOCS || !href || /^(https?:|mailto:|#)/i.test(href)) return -1;
+      let path = href.split('#')[0].split('?')[0];
+      try { path = decodeURIComponent(path); } catch (e) { /* href mal codificado: se usa tal cual */ }
+      path = path.replace(/^file:\/\/.*?\/sifrah-docs\//, '').replace(/^\.?\//, '');
+      if (!/\.(md|pdf)$/i.test(path)) return -1;
+
+      let idx = window.SIFRAH_DOCS.findIndex((d) => d.relPath === path);
+      if (idx === -1) {
+        const name = path.split('/').pop();
+        const matches = window.SIFRAH_DOCS.filter((d) => d.filename === name);
+        if (matches.length === 1) idx = window.SIFRAH_DOCS.indexOf(matches[0]);
+      }
+      return idx;
+    }
+
+    function enhanceDocLinks(container) {
+      container.querySelectorAll('a[href]').forEach((a) => {
+        const idx = findDocIndexByHref(a.getAttribute('href'));
+        if (idx === -1) return;
+        a.title = (isPdfDoc(window.SIFRAH_DOCS[idx]) ? 'Abrir PDF en el lector: ' : 'Abrir en el lector: ') + window.SIFRAH_DOCS[idx].title;
+        a.onclick = (e) => {
+          e.preventDefault();
+          loadDoc(idx);
+        };
       });
     }
 
